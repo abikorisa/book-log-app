@@ -1,18 +1,71 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <Header />
+    <input type="text" v-model="keyword" /><button @click="serchBook()">
+      検索
+    </button>
+    <ul v-for="book in books" :key="book.index">
+      <li class="books">
+        <table>
+          <tr>
+            <th width="250" height="1em">
+              <a href="book.Item.itemUrl" target="_blank">{{
+                book.Item.title
+              }}</a>
+            </th>
+          </tr>
+          <tr>
+            <td height="150">
+              <img :src="book.Item.mediumImageUrl" />
+            </td>
+          </tr>
+          <tr>
+            <td height="1em">{{ book.Item.itemPrice }}円</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
   </div>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+<script lang="ts">
+import Vue from 'vue';
+import axios from 'axios';
+import Header from '../components/header.vue';
 
-export default {
+export default Vue.extend({
   name: 'Home',
-  components: {
-    HelloWorld
-  }
-}
+  components: { Header },
+  props: {},
+  data() {
+    return {
+      keyword: '',
+      books: [],
+      pageSize: 9,
+    };
+  },
+  computed: {},
+  methods: {
+    serchBook() {
+      console.log(this.keyword);
+      axios
+        .get(
+          'https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404',
+          {
+            params: {
+              applicationId: '1027306809265886299',
+              title: this.keyword,
+            },
+          }
+        )
+        .then((res) => {
+          this.books = res.data.Items;
+          console.log(this.books);
+        });
+    },
+  },
+  created() {
+    console.log('CLICK!!!'); // eslint-disable-line
+  },
+});
 </script>
