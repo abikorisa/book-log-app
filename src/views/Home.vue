@@ -4,34 +4,36 @@
     <input type="text" v-model="keyword" /><button @click="serchBook()">
       検索
     </button>
-    <ul v-for="book in books" :key="book.index">
-      <li class="books">
-        <table>
-          <tr>
-            <th width="250" height="1em">
-              <a href="book.Item.itemUrl" target="_blank">{{
-                book.Item.title
-              }}</a>
-            </th>
-          </tr>
-          <tr>
-            <td height="150">
-              <img :src="book.Item.mediumImageUrl" />
-            </td>
-          </tr>
-          <tr>
-            <td height="1em">{{ book.Item.itemPrice }}円</td>
-          </tr>
-        </table>
-      </li>
-    </ul>
+    <div class="display--flex">
+      <ul v-for="book in books" :key="book.index">
+        <li class="books">
+          <table>
+            <tr>
+              <td height="150">
+                <img :src="book.Item.mediumImageUrl" />
+              </td>
+            </tr>
+            <tr>
+              <td width="250" height="1em">
+                <a href="book.Item.itemUrl" target="_blank">{{
+                  book.Item.title
+                }}</a>
+              </td>
+            </tr>
+            <tr>
+              <td height="1em">{{ book.Item.itemPrice }}円</td>
+            </tr>
+          </table>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import axios from 'axios';
-import Header from '../components/header.vue';
+import Header from '@/components/molecules/header.vue';
 
 export default Vue.extend({
   name: 'Home',
@@ -59,7 +61,9 @@ export default Vue.extend({
           }
         )
         .then((res) => {
+          this.books = [];
           this.books = res.data.Items;
+          this.keyword = '';
           console.log(this.books);
         });
     },
@@ -69,3 +73,15 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style lang="scss">
+.display--flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  .books {
+    margin: 10px 10px;
+    background-color: #ffffff;
+  }
+}
+</style>

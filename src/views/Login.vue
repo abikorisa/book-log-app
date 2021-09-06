@@ -7,8 +7,8 @@
           <p>メールアドレス</p>
           <input type="text" v-model="email" />
           <p>パスワード</p>
-          <input type="text" v-model="password" /><br />
-          <button class="main-btn" @click="login">ログイン</button>
+          <input type="password" v-model="password" /><br />
+          <button class="main-btn" @click="signIn">ログイン</button>
           <router-link to="/register">新規登録はこちら</router-link>
         </div>
       </div>
@@ -22,6 +22,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import firebase from 'firebase';
 
 export type DataType = {
   email: string;
@@ -40,9 +41,16 @@ export default Vue.extend({
   },
   computed: {},
   methods: {
-    login(): void {
-      console.log(this.email);
-      console.log(this.password);
+    signIn(): void {
+      let email = this.email;
+      let password = this.password;
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          console.log('ログインが完了しました！');
+          this.$router.push('/home');
+        });
     },
   },
   created() {

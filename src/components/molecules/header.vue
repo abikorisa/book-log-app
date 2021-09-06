@@ -4,13 +4,33 @@
       <a href="/"><span class="brand">書籍管理アプリ</span></a>
       <nav class="nav">
         <div class="nav__wrapper">
-          <span>マイページ</span>
+          <span @click="checkUser">マイページ</span>
           <span>ログアウト</span>
         </div>
       </nav>
     </div>
   </header>
 </template>
+
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'Header',
+  components: {},
+  props: {},
+  data() {
+  },
+  computed: {},
+  methods: {
+    checkUser():void{
+      console.log('user')
+    }
+  },
+  created() {
+  },
+});
+</script>
 
 <style lang="scss">
 .brand {
