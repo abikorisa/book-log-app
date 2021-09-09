@@ -1,13 +1,17 @@
 <template>
   <div class="home">
-    <div class="sign">
-      <div class="container">
+    <div class="main__form">
+      <div class="signIn">
         <div class="position-center panel">
-          <h2>書籍管理アプリ</h2>
-          <p>メールアドレス</p>
-          <input type="text" v-model="email" />
-          <p>パスワード</p>
-          <input type="password" v-model="password" /><br />
+          <h2 class="signIn__title">書籍管理アプリ</h2>
+          <p class="signIn__subTitle">メールアドレス</p>
+          <input class="signIn__input" type="text" v-model="email" />
+          <p class="signIn__subTitle">パスワード</p>
+          <input
+            class="signIn__input"
+            type="password"
+            v-model="password"
+          /><br />
           <button class="main-btn" @click="signIn">ログイン</button>
           <router-link to="/register">新規登録はこちら</router-link>
         </div>
@@ -22,6 +26,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { authModule } from '@/store/modules/auth';
 import firebase from 'firebase';
 
 export type DataType = {
@@ -47,10 +52,12 @@ export default Vue.extend({
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
-        .then(() => {
-          console.log('ログインが完了しました！');
-          this.$router.push('/home');
+        .then((userCredential) => {
+          const user = userCredential.user;
+          authModule.setLoginUser(user);
         });
+      console.log('ログインが完了しました！');
+      this.$router.push('/home');
     },
   },
   created() {
@@ -64,48 +71,50 @@ export default Vue.extend({
   width: 80%;
   margin: 0 auto;
   display: flex;
-  .sign {
-    align-items: center;
-    .container {
-      padding: 0 30px;
-      .p {
+  .main__form {
+    margin: 60px 0;
+    .signIn {
+      margin: 0 auto;
+      padding: 30px;
+      width: 600px;
+      border-radius: 10px;
+      background-color: #ffffff;
+      a {
+        color: #8491a5;
+      }
+      &__title {
+        color: #fcbd4c;
+        font-size: 40px;
+        padding-bottom: 20px;
+      }
+      &__subtitle {
         margin-top: 36px;
         font-weight: bold;
         font-size: 14px;
         text-align: center;
       }
-      input {
+      &__input {
         padding: 10px 20px;
+        width: 50%;
         border: 1px solid #fcbd4c;
         border-radius: 10px;
         margin-bottom: 30px;
       }
-      h2 {
-        color: #fcbd4c;
-        font-size: 40px;
-      }
-    }
-    width: 50%;
-    height: 500px;
-    margin: 50px 0;
-    border-radius: 10px;
-    background-color: #ffffff;
-    a {
-      color: #8491a5;
     }
   }
   .home__img {
-    width: 50%;
+    width: 300px;
+    position: relative;
     .home__img__1 {
       position: absolute;
       top: -10px;
-      left: 680px;
+      left: 130px;
       width: 350px;
     }
     .home__img__2 {
       position: absolute;
       top: 130px;
-      left: 500px;
+      left: -100px;
     }
   }
 }

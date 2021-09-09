@@ -44,6 +44,8 @@ body {
   margin: 0;
   background-color: rgb(255, 221, 220, 0.25);
   color: #24285b;
+  height: 100%;
+  background: rgb(235, 248, 243);
 }
 
 ul,

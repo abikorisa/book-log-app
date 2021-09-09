@@ -4,7 +4,7 @@
       <a href="/"><span class="brand">書籍管理アプリ</span></a>
       <nav class="nav">
         <div class="nav__wrapper">
-          <span @click="checkUser">マイページ</span>
+          <span>ユーザー</span>
           <span>ログアウト</span>
         </div>
       </nav>
@@ -19,16 +19,8 @@ export default Vue.extend({
   name: 'Header',
   components: {},
   props: {},
-  data() {
-  },
   computed: {},
-  methods: {
-    checkUser():void{
-      console.log('user')
-    }
-  },
-  created() {
-  },
+  methods: {},
 });
 </script>
 
