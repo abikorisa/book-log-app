@@ -5,6 +5,7 @@ import Register from '../views/Register.vue'
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import Detail from '../views/BookDetail.vue'
+import UserPage from '../views/UserPage.vue'
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes: Array<RouteConfig> = [
     path: '/detail',
     name: 'Detail',
     component: Detail
+  },
+  {
+    path: '/userpage',
+    name: 'UserPage',
+    component: UserPage
   },
 
 ]

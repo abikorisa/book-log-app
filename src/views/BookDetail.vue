@@ -19,39 +19,44 @@
         <button @click="openModal" class="btn btn-tag btn-tag--bookmark">
           <i class="fas fa-bookmark"></i>本棚に追加
         </button>
+        <a href="#" class="btn btn-tag btn-tag--bookmark">
+          <i class="fas fa-bookmark"></i>書店で詳細を見る
+        </a>
       </div>
       <div class="details__right">
-        <table>
+        <table class="table">
           <caption>
             本の詳細
           </caption>
-          <tr class="tr_02">
-            <th class="th_02">タイトル</th>
-            <td class="td_02">{{ this.$route.params.book_title }}</td>
+          <tr class="table__row">
+            <th class="table__head">タイトル</th>
+            <td class="table__body">{{ this.$route.params.book_title }}</td>
           </tr>
-          <tr class="tr_02">
-            <th class="th_02">著者名</th>
-            <td class="td_02">{{ this.$route.params.book_author }}</td>
+          <tr class="table__row">
+            <th class="table__head">著者名</th>
+            <td class="table__body">{{ this.$route.params.book_author }}</td>
           </tr>
-          <tr class="tr_02">
-            <th class="th_02">出版社</th>
-            <td class="td_02">{{ this.$route.params.book_publisherName }}</td>
+          <tr class="table__row">
+            <th class="table__head">出版社</th>
+            <td class="table__body">
+              {{ this.$route.params.book_publisherName }}
+            </td>
           </tr>
-          <tr class="tr_02">
-            <th class="th_02">発売日</th>
-            <td class="td_02">{{ this.$route.params.book_salesDate }}</td>
+          <tr class="table__row">
+            <th class="table__head">発売日</th>
+            <td class="table__body">{{ this.$route.params.book_salesDate }}</td>
           </tr>
-          <tr class="tr_02">
-            <th class="th_02">価格</th>
-            <td class="td_02">
+          <tr class="table__row">
+            <th class="table__head">価格</th>
+            <td class="table__body">
               {{
                 this.$route.params.book_price.toLocaleString('ja-JP')
               }}円(税込)
             </td>
           </tr>
-          <tr class="tr_02">
-            <th class="th_02">あらすじ</th>
-            <td class="td_02">{{ this.$route.params.book_caption }}</td>
+          <tr class="table__row">
+            <th class="table__head">あらすじ</th>
+            <td class="table__body">{{ this.$route.params.book_caption }}</td>
           </tr>
         </table>
       </div>
@@ -89,65 +94,12 @@ export default class Detail extends Vue {
 </script>
 
 <style lang="scss" scoped>
-caption {
-  background-color: #e5e5e5;
-  height: 50px;
-  padding: 10px;
-  vertical-align: middle;
-  text-align: left;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-}
-
 .details__image {
   background-color: #fff;
   width: 216px;
   margin: 0 auto 10px auto;
   padding-top: 10px;
   border-radius: 5px;
-}
-
-table {
-  border-collapse: collapse;
-  margin: 0 auto;
-  padding: 0;
-  width: 630px;
-  table-layout: auto;
-  color: #000;
-}
-
-table tr {
-  background-color: #fff;
-  padding: 0.35em;
-  border-bottom: 1px solid #bbb;
-}
-table tr:last-child {
-  border-bottom: none;
-}
-table th {
-  padding: 1em 10px 1em 1em;
-  border-right: 1px dashed #bbb;
-  white-space: nowrap;
-}
-table td {
-  padding: 1em 10px 1em 1em;
-  border-right: 1px solid #bbb;
-}
-table th:last-child,
-table td:last-child {
-  border: none;
-}
-
-.details {
-  width: 80%;
-  margin: 0 auto;
-  display: flex;
-  &__left {
-    width: 30%;
-  }
-  &__right {
-    width: 70%;
-  }
 }
 
 #overlay {
@@ -233,5 +185,48 @@ button.btn-tag--bookmark:hover {
 button.btn-tag--bookmark:hover i {
   opacity: 1;
   color: #fff100;
+}
+
+.table {
+  border-collapse: collapse;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 1117px;
+  width: 80%;
+  table-layout: auto;
+  color: #000;
+  &__row {
+    background-color: #fff;
+    padding: 0.35em;
+    border-bottom: 1px solid #bbb;
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  &__head {
+    padding: 1em 10px 1em 1em;
+    border-right: 1px dashed #bbb;
+    white-space: nowrap;
+    &:last-child {
+      border: none;
+    }
+  }
+  &__body {
+    padding: 1em 10px 1em 1em;
+    border-right: 1px solid #bbb;
+    &:last-child {
+      border: none;
+    }
+  }
+}
+
+caption {
+  background-color: #e5e5e5;
+  height: 50px;
+  padding: 10px;
+  vertical-align: middle;
+  text-align: left;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 </style>

@@ -14,11 +14,21 @@
         <div class="modal__right">
           <div class="modal__form">
             <p>読み終わった日<span class="must">必須</span></p>
-            <input class="modal__input" type="date" />
+            <input
+              v-model="review.reviewDate"
+              class="modal__input"
+              type="date"
+            />
           </div>
           <div class="modal__form">
             <p>感想・レビュー<span class="must">必須</span></p>
-            <textarea class="modal__input" name="rea" id="" rows="3"></textarea>
+            <textarea
+              v-model="review.reviewText"
+              class="modal__input"
+              name="rea"
+              id=""
+              rows="3"
+            ></textarea>
           </div>
         </div>
       </div>
@@ -31,20 +41,21 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { authModule } from '@/store/modules/auth';
+import { bookModule } from '@/store/modules/book';
 import firebase from 'firebase';
 
-interface bookType {
-  bookTitle: string;
-  bookImage: string;
-  bookAuthor: string;
+interface reviewDate {
+  reviewDate: string;
+  reviewText: string;
+  reviewId: string;
 }
 
 @Component
 export default class Modal extends Vue {
-  book: bookType = {
-    bookTitle: '',
-    bookImage: '',
-    bookAuthor: '',
+  review: reviewDate = {
+    reviewDate: '',
+    reviewText: '',
+    reviewId: '',
   };
 
   @Prop({ default: '' })
@@ -56,16 +67,24 @@ export default class Modal extends Vue {
   @Prop({ default: '' })
   book_author!: string;
 
-  get getUid() {
+  get getUid(): string | null {
     return authModule.uid;
   }
 
-  addBookShelf() {
-    this.book.bookTitle = this.book_title;
-    this.book.bookImage = this.book_image;
-    this.book.bookAuthor = this.book_author;
+  addBookShelf(): void {
+    function getUniqueStr() {
+      let strong = 1000;
+      return (
+        new Date().getTime().toString(16) +
+        Math.floor(strong * Math.random()).toString(16)
+      );
+    }
+    this.review.reviewId = getUniqueStr();
     let book = {
-      bookInfo: [this.book],
+      bookTitle: this.book_title,
+      bookAuthor: this.book_author,
+      bookImage: this.book_image,
+      bookReview: [this.review],
     };
     firebase
       .firestore()
@@ -73,15 +92,18 @@ export default class Modal extends Vue {
       .add(book)
       .then((doc) => {
         console.log('処理が通りました٩( ᐛ )وいえい');
-        console.log(doc.id);
+        let id: any = doc.id;
+        bookModule.addBookShelf(id, book);
+        console.log(book);
+        this.clickEvent();
       });
   }
 
-  clickEvent() {
+  clickEvent(): void {
     this.$emit('from-child');
   }
   // closeボタン意外の余白を押してもモーダルが消える
-  stopEvent(event: Event) {
+  stopEvent(event: Event): void {
     event.stopPropagation();
   }
 }

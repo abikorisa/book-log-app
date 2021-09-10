@@ -1,10 +1,10 @@
 <template>
   <header class="site-header">
     <div class="site-header__wrapper">
-      <a href="/"><span class="brand">書籍管理アプリ</span></a>
+      <a href="/home"><span class="brand">書籍管理アプリ</span></a>
       <nav class="nav">
         <div class="nav__wrapper">
-          <span>ユーザー</span>
+          <router-link to="/userpage">ユーザー</router-link>
           <span>ログアウト</span>
         </div>
       </nav>
