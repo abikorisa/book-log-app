@@ -5,7 +5,7 @@
     <div class="serchFrom">
       <input class="serchFrom__input" type="text" v-model="keyword" />
       <button class="serchFrom__button" @click="serchBook()">
-        検索
+        <i class="fas fa-search"></i>
       </button>
     </div>
     <div class="display--flex">
@@ -58,6 +58,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { authModule } from '@/store/modules/auth';
+import { bookModule } from '@/store/modules/book';
 import axios from 'axios';
 import Header from '@/components/molecules/header.vue';
 
@@ -67,12 +68,26 @@ import Header from '@/components/molecules/header.vue';
   },
 })
 export default class Home extends Vue {
-  keyword = '';
+  keyword = bookModule.keyword;
   books = [];
 
   get getUid() {
     return authModule.uid;
   }
+
+  //一応キーワードを保持している
+  get getKeyword() {
+    return bookModule.keyword;
+  }
+
+  /* created() {
+    //2回やらないと遷移されない
+    if (!this.getUid) {
+      this.$router.push('/');
+    } else {
+      console.log('画面遷移成功');
+    }
+  } */
 
   serchBook(): void {
     console.log(this.keyword);
@@ -87,7 +102,7 @@ export default class Home extends Vue {
       .then((res) => {
         this.books = [];
         this.books = res.data.Items;
-        this.keyword = '';
+        bookModule.setKeyword(this.keyword);
         console.log(this.books);
       });
   }
@@ -107,18 +122,18 @@ export default class Home extends Vue {
 
 .serchFrom__input {
   outline: 0;
-  height: 2.5rem;
-  margin: 0 10px;
+  height: 2.2rem;
+  margin: 0 -10px;
   max-width: 270px;
-  border-radius: 2px;
+  border-radius: 10px;
   background: #fff;
   vertical-align: top;
 }
 .serchFrom__button {
-  width: 70px;
-  height: 2.5rem;
-  border-radius: 2px;
-  background: #7fbfff;
+  width: 40px;
+  height: 2.2rem;
+  border-radius: 0 10px 10px 0;
+  background: #fcbd4c;
   color: #fff;
   font-weight: bold;
   font-size: 16px;
@@ -126,7 +141,7 @@ export default class Home extends Vue {
   vertical-align: top;
   &:hover {
     background: #eee;
-    color: #7fbfff;
+    color: #fcbd4c;
   }
 }
 </style>

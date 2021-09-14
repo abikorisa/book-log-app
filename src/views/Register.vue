@@ -34,6 +34,7 @@ export default class Register extends Vue {
       .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
+        authModule.setUser;
         authModule.setLoginUser(user);
       });
     console.log('新規登録が完了しました！');

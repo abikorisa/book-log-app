@@ -47,7 +47,7 @@ import firebase from 'firebase';
 interface reviewDate {
   reviewDate: string;
   reviewText: string;
-  reviewId: string;
+  //reviewId: string;
 }
 
 @Component
@@ -55,7 +55,7 @@ export default class Modal extends Vue {
   review: reviewDate = {
     reviewDate: '',
     reviewText: '',
-    reviewId: '',
+    // reviewId: '',
   };
 
   @Prop({ default: '' })
@@ -72,19 +72,22 @@ export default class Modal extends Vue {
   }
 
   addBookShelf(): void {
-    function getUniqueStr() {
+    /*     
+      削除するときいるかと思ったけどいらなかった
+      function getUniqueStr() {
       let strong = 1000;
       return (
         new Date().getTime().toString(16) +
         Math.floor(strong * Math.random()).toString(16)
       );
     }
-    this.review.reviewId = getUniqueStr();
+    this.review.reviewId = getUniqueStr(); */
     let book = {
       bookTitle: this.book_title,
       bookAuthor: this.book_author,
       bookImage: this.book_image,
       bookReview: [this.review],
+      bookId: '',
     };
     firebase
       .firestore()
@@ -92,9 +95,20 @@ export default class Modal extends Vue {
       .add(book)
       .then((doc) => {
         console.log('処理が通りました٩( ᐛ )وいえい');
+        console.log();
         let id: any = doc.id;
-        bookModule.addBookShelf(id, book);
-        console.log(book);
+        let date = new Date();
+        firebase
+          .firestore()
+          .collection(`users/${this.getUid}/bookShelf`)
+          .doc(id)
+          .update({ bookId: id, bookDate: date })
+          .then(() => {
+            console.log('bookIdの追加が完了');
+          });
+        //ここでidが無事追加されている
+        bookModule.addBookShelfId(id);
+        //bookModule.addBookShelf(book);
         this.clickEvent();
       });
   }

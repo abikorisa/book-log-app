@@ -20,7 +20,7 @@
           <i class="fas fa-bookmark"></i>本棚に追加
         </button>
         <a href="#" class="btn btn-tag btn-tag--bookmark">
-          <i class="fas fa-bookmark"></i>書店で詳細を見る
+          <i class="fas fa-bookmark"></i>詳細を見る
         </a>
       </div>
       <div class="details__right">
@@ -115,78 +115,65 @@ export default class Detail extends Vue {
   justify-content: center;
 }
 
-@import 'https://use.fontawesome.com/releases/v5.13.0/css/all.css';
-
-.btn,
-a.btn,
-button.btn {
-  font-weight: 700;
-  line-height: 1.5;
+.btn {
+  //font-weight: 700;
+  //line-height: 1.5;
   position: relative;
   display: inline-block;
   padding: 1rem 4rem;
   cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-transition: all 0.3s;
   transition: all 0.3s;
-  text-align: center;
-  vertical-align: middle;
+  //text-align: center;
+  //vertical-align: middle;
   text-decoration: none;
   letter-spacing: 0.1em;
   color: #212529;
   border-radius: 0.5rem;
 }
 
-button.btn-tag {
+.btn-tag {
   position: relative;
-  padding: 1.25rem 3rem 1.25rem 80px;
+  padding: 1rem 3rem 1rem 6rem;
   color: #000;
+  &:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 100%;
+    content: '';
+    border-radius: 0.5rem 0 0 0.5rem;
+  }
 }
 
-button.btn-tag:before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50px;
-  height: 100%;
-  content: '';
-  border-radius: 0.5rem 0 0 0.5rem;
-}
-
-button.btn-tag--bookmark {
+.btn-tag--bookmark {
   background: #e5e5e5;
+  &:before {
+    background: #fcbd4c;
+  }
+  &:hover {
+    color: #212529;
+    background: #f2f2f2;
+    i {
+      opacity: 1;
+      color: #fff100;
+    }
+  }
+  i {
+    font-size: 120%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    padding: 1.2rem 0;
+    text-align: center;
+    letter-spacing: 0;
+    opacity: 0.5;
+    color: #fff;
+  }
 }
 
-button.btn-tag--bookmark:before {
-  background: #fcbd4c;
-}
-
-button.btn-tag--bookmark i {
-  font-size: 120%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50px;
-  padding: 1.5rem 0;
-  text-align: center;
-  letter-spacing: 0;
-  opacity: 0.5;
-  color: #fff;
-}
-
-button.btn-tag--bookmark:hover {
-  color: #212529;
-  background: #f2f2f2;
-}
-
-button.btn-tag--bookmark:hover i {
-  opacity: 1;
-  color: #fff100;
-}
-
+// 本詳細のtable
 .table {
   border-collapse: collapse;
   margin: 0 auto;

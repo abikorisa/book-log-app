@@ -54,6 +54,7 @@ export default Vue.extend({
         .signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
           const user = userCredential.user;
+          authModule.setUser;
           authModule.setLoginUser(user);
         });
       console.log('ログインが完了しました！');

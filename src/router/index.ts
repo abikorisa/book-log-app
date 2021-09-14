@@ -31,7 +31,7 @@ const routes: Array<RouteConfig> = [
     component: About
   },
   {
-    path: '/detail',
+    path: '/detail/:id',
     name: 'Detail',
     component: Detail
   },
@@ -40,7 +40,6 @@ const routes: Array<RouteConfig> = [
     name: 'UserPage',
     component: UserPage
   },
-
 ]
 
 const router = new VueRouter({

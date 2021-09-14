@@ -1,7 +1,9 @@
 <template>
   <header class="site-header">
     <div class="site-header__wrapper">
-      <a href="/home"><span class="brand">書籍管理アプリ</span></a>
+      <router-link to="/home"
+        ><span class="brand">書籍管理アプリ</span></router-link
+      >
       <nav class="nav">
         <div class="nav__wrapper">
           <router-link to="/userpage">ユーザー</router-link>
