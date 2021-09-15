@@ -7,8 +7,6 @@
       :edit_text="this.editText"
       :book="this.book"
     />
-    <Header />
-    <p>{{ getUid }}</p>
     <div class="details">
       <div class="details__left">
         <div class="details__image">
@@ -59,7 +57,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { authModule } from '@/store/modules/auth';
 import { bookModule } from '@/store/modules/book';
-import Header from '@/components/molecules/header.vue';
 import Edit from '@/components/molecules/edit.vue';
 import firebase from 'firebase';
 
@@ -78,7 +75,6 @@ export type BookShelfType = {
 
 @Component({
   components: {
-    Header,
     Edit,
   },
 })
@@ -94,10 +90,11 @@ export default class UserPage extends Vue {
   }
 
   created() {
-    if (this.getUid !== null) {
-      return true;
-    } else {
+    if (!this.getUid) {
       this.$router.push('/');
+      console.log('ログアウト状態なので遷移失敗（ ｉ _ ｉ ）');
+    } else {
+      console.log('ユーザー画面に遷移できました！');
     }
   }
 
@@ -154,7 +151,7 @@ export default class UserPage extends Vue {
 <style lang="scss">
 .details {
   max-width: 1117px;
-  width: 80%;
+  width: 60%;
   margin: 30px auto;
   display: flex;
   &__left {
@@ -162,6 +159,7 @@ export default class UserPage extends Vue {
   }
   &__image {
     background-color: #fff;
+
     width: 216px;
     margin: 0 auto 10px auto;
     padding-top: 10px;

@@ -1,19 +1,29 @@
 <template>
   <div id="app">
+    <Header v-if="getFlg" />
     <router-view />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import Header from '@/components/molecules/header.vue';
 import Login from './views/Login.vue';
+import { authModule } from './store/modules/auth';
 
 @Component({
   components: {
     Login,
+    Header,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  headerFlg = authModule.headerFlg;
+
+  get getFlg() {
+    return authModule.headerFlg;
+  }
+}
 </script>
 
 <style lang="scss">
@@ -24,7 +34,6 @@ export default class App extends Vue {}
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  //margin-top: 60px;
   background-color: rgb(235, 248, 243);
 }
 

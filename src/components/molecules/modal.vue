@@ -5,7 +5,6 @@
         <p class="modal__title">本棚に追加</p>
       </div>
       <p class="modal__bookTitle">{{ book_title }}</p>
-
       <div class="modal__review">
         <div class="modal__left">
           <img :src="book_image" alt="" />
@@ -32,8 +31,12 @@
           </div>
         </div>
       </div>
-      <button @click="addBookShelf()">追加する</button>
-      <button @click="clickEvent">close</button>
+      <div class="editBtn">
+        <button class="editBtn__add" @click="addBookShelf()">追加する</button>
+        <button class="editBtn__back" @click="clickEvent">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -47,7 +50,6 @@ import firebase from 'firebase';
 interface reviewDate {
   reviewDate: string;
   reviewText: string;
-  //reviewId: string;
 }
 
 @Component
@@ -55,7 +57,6 @@ export default class Modal extends Vue {
   review: reviewDate = {
     reviewDate: '',
     reviewText: '',
-    // reviewId: '',
   };
 
   @Prop({ default: '' })
@@ -72,16 +73,6 @@ export default class Modal extends Vue {
   }
 
   addBookShelf(): void {
-    /*     
-      削除するときいるかと思ったけどいらなかった
-      function getUniqueStr() {
-      let strong = 1000;
-      return (
-        new Date().getTime().toString(16) +
-        Math.floor(strong * Math.random()).toString(16)
-      );
-    }
-    this.review.reviewId = getUniqueStr(); */
     let book = {
       bookTitle: this.book_title,
       bookAuthor: this.book_author,
@@ -95,7 +86,6 @@ export default class Modal extends Vue {
       .add(book)
       .then((doc) => {
         console.log('処理が通りました٩( ᐛ )وいえい');
-        console.log();
         let id: any = doc.id;
         let date = new Date();
         firebase
@@ -176,6 +166,7 @@ export default class Modal extends Vue {
     width: 80%;
     .must {
       font-size: 10px;
+      font-weight: 900;
       padding: 3px 5px;
       margin-left: 5px;
       border-radius: 5px;

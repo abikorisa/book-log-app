@@ -28,8 +28,14 @@
           </div>
         </div>
       </div>
-      <button @click="updateReview(book)">更新する</button>
-      <button @click="clickEvent">close</button>
+      <div class="editBtn">
+        <button class="editBtn__add" @click="updateReview(book)">
+          更新する
+        </button>
+        <button class="editBtn__back" @click="clickEvent">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -87,3 +93,28 @@ export default class Edit extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.editBtn {
+  &__add {
+    background-color: #fcbd4c;
+    border-radius: 15px;
+    padding: 5px 20px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    transition: all 0.3s;
+    &:hover {
+      background-color: #e5e5e5;
+      box-sizing: border-box;
+      border-radius: 15px;
+      color: #fcbd4c;
+    }
+  }
+  &__back {
+    color: #bbb;
+    font-size: 15px;
+    padding: 5px 10px;
+  }
+}
+</style>

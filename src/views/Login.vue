@@ -4,6 +4,7 @@
       <div class="signIn">
         <div class="position-center panel">
           <h2 class="signIn__title">書籍管理アプリ</h2>
+
           <p class="signIn__subTitle">メールアドレス</p>
           <input class="signIn__input" type="text" v-model="email" />
           <p class="signIn__subTitle">パスワード</p>
@@ -54,11 +55,12 @@ export default Vue.extend({
         .signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
           const user = userCredential.user;
-          authModule.setUser;
           authModule.setLoginUser(user);
+          authModule.changeFlgTrue();
+          console.log(authModule.headerFlg);
+          console.log('ログインが完了しました！');
+          this.$router.push('/home');
         });
-      console.log('ログインが完了しました！');
-      this.$router.push('/home');
     },
   },
   created() {

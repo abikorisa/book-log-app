@@ -34,11 +34,12 @@ export default class Register extends Vue {
       .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        authModule.setUser;
         authModule.setLoginUser(user);
+        authModule.changeFlgTrue();
+        console.log(authModule.headerFlg);
+        console.log('新規登録が完了しました！');
+        this.$router.push('/home');
       });
-    console.log('新規登録が完了しました！');
-    this.$router.push('/home');
   }
 }
 </script>
@@ -52,6 +53,7 @@ export default class Register extends Vue {
     width: 600px;
     border-radius: 10px;
     background-color: #ffffff;
+    border: 20px solid #daf2e9;
     a {
       color: #8491a5;
     }

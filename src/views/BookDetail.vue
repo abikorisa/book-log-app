@@ -7,8 +7,6 @@
       :book_author="this.$route.params.book_author"
       :book_image="this.$route.params.book_image"
     />
-    <Header />
-    <p>{{ getUid }}</p>
     <div class="details">
       <div class="details__left">
         <div class="details__image">
@@ -16,12 +14,12 @@
           <p>{{ this.$route.params.book_title }}</p>
           <p>{{ this.$route.params.book_author }}</p>
         </div>
-        <button @click="openModal" class="btn btn-tag btn-tag--bookmark">
-          <i class="fas fa-bookmark"></i>本棚に追加
+        <button @click="openModal" class="btn__contents">
+          <i class="fas fa-book-open"></i>本棚に追加する
         </button>
-        <a href="#" class="btn btn-tag btn-tag--bookmark">
-          <i class="fas fa-bookmark"></i>詳細を見る
-        </a>
+        <!-- <button onclick="$route.params.book_image2" class="btn__contents">
+          <i class="fas fa-shopping-cart"></i>書店で詳細を見る
+        </button> -->
       </div>
       <div class="details__right">
         <table class="table">
@@ -67,12 +65,10 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { authModule } from '@/store/modules/auth';
-import Header from '@/components/molecules/header.vue';
 import Modal from '@/components/molecules/modal.vue';
 
 @Component({
   components: {
-    Header,
     Modal,
   },
 })
@@ -96,7 +92,7 @@ export default class Detail extends Vue {
 <style lang="scss" scoped>
 .details__image {
   background-color: #fff;
-  width: 216px;
+  width: 220px;
   margin: 0 auto 10px auto;
   padding-top: 10px;
   border-radius: 5px;
@@ -113,64 +109,6 @@ export default class Detail extends Vue {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.btn {
-  //font-weight: 700;
-  //line-height: 1.5;
-  position: relative;
-  display: inline-block;
-  padding: 1rem 4rem;
-  cursor: pointer;
-  transition: all 0.3s;
-  //text-align: center;
-  //vertical-align: middle;
-  text-decoration: none;
-  letter-spacing: 0.1em;
-  color: #212529;
-  border-radius: 0.5rem;
-}
-
-.btn-tag {
-  position: relative;
-  padding: 1rem 3rem 1rem 6rem;
-  color: #000;
-  &:before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50px;
-    height: 100%;
-    content: '';
-    border-radius: 0.5rem 0 0 0.5rem;
-  }
-}
-
-.btn-tag--bookmark {
-  background: #e5e5e5;
-  &:before {
-    background: #fcbd4c;
-  }
-  &:hover {
-    color: #212529;
-    background: #f2f2f2;
-    i {
-      opacity: 1;
-      color: #fff100;
-    }
-  }
-  i {
-    font-size: 120%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50px;
-    padding: 1.2rem 0;
-    text-align: center;
-    letter-spacing: 0;
-    opacity: 0.5;
-    color: #fff;
-  }
 }
 
 // 本詳細のtable
@@ -215,5 +153,19 @@ caption {
   text-align: left;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+}
+
+.btn__contents {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-bottom: 8px;
+  font-size: 15px;
+  width: 220px;
+  text-align: left;
+  > i {
+    padding-right: 10px;
+    color: #fcbd4c;
+  }
 }
 </style>

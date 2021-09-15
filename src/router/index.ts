@@ -31,7 +31,7 @@ const routes: Array<RouteConfig> = [
     component: About
   },
   {
-    path: '/detail/:id',
+    path: '/detail',
     name: 'Detail',
     component: Detail
   },

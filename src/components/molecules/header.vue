@@ -6,8 +6,8 @@
       >
       <nav class="nav">
         <div class="nav__wrapper">
-          <router-link to="/userpage">ユーザー</router-link>
-          <span>ログアウト</span>
+          <span><router-link to="/userpage">ユーザー</router-link></span>
+          <button @click="logout()"><span>ログアウト</span></button>
         </div>
       </nav>
     </div>
@@ -15,15 +15,24 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { authModule } from '@/store/modules/auth';
+import firebase from 'firebase';
 
-export default Vue.extend({
-  name: 'Header',
-  components: {},
-  props: {},
-  computed: {},
-  methods: {},
-});
+@Component
+export default class Header extends Vue {
+  get getUid(): string | null {
+    return authModule.uid;
+  }
+
+  logout() {
+    firebase.auth().signOut();
+    authModule.deleteUser();
+    authModule.changeFlgFalse();
+    console.log(authModule.headerFlg);
+    this.$router.push('/');
+  }
+}
 </script>
 
 <style lang="scss">
@@ -39,7 +48,11 @@ export default Vue.extend({
 }
 
 .site-header__wrapper {
-  padding: 2rem 3rem;
+  padding: 2rem 6rem;
+}
+
+.nav__wrapper {
+  display: flex;
 }
 
 @media (min-width: 600px) {

@@ -6,6 +6,7 @@ import store from "@/store/store";
 export interface UserState {
   uid: string | null;
   login_user: any | null,
+  headerFlg: boolean
 }
 
 // デコレータを設定。nameにモジュール名を指定する。UserStateを継承する
@@ -13,6 +14,7 @@ export interface UserState {
 class User extends VuexModule implements UserState {
   uid: string | null = null;
   login_user: any | null = null;
+  headerFlg = false;
 
   // getterはデコレータなしのgetアクセサで書く
   get isLogin(): boolean {
@@ -23,10 +25,19 @@ class User extends VuexModule implements UserState {
     return this.uid
   }
 
+  get getFlg(): boolean {
+    return this.headerFlg
+  }
+
   // mutationはデコレータで指定
-  @Mutation
+  /* @Mutation
   setUser(uid: string | null): void {
     this.uid = uid;
+  } */
+
+  @Mutation
+  deleteUser() {
+    this.uid = null
   }
 
   @Mutation
@@ -37,12 +48,21 @@ class User extends VuexModule implements UserState {
     console.log(this.uid)
   }
 
+  @Mutation
+  changeFlgTrue() {
+    this.headerFlg = true
+  }
+  @Mutation
+  changeFlgFalse() {
+    this.headerFlg = false
+  }
+
   // actionもデコレータで指定
-  @Action({ rawError: true })
+  /* @Action({ rawError: true })
   async login(uid: string | null) {
     // thisでmutationが呼べる
     this.setUser(uid);
-  }
+  } */
 }
 
 export const authModule = getModule(User);
