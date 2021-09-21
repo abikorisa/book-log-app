@@ -43,8 +43,6 @@ class Book extends VuexModule implements BookState {
   @Mutation
   addBookShelfId(id: string) {
     this.bookShelfId = id
-    console.log('下記はbookShelfId')
-    console.log(this.bookShelfId)
   }
 
   @Mutation
@@ -52,12 +50,23 @@ class Book extends VuexModule implements BookState {
     this.keyword = keyword
   }
 
-  /* @Mutation
-  addBookShelf(book: bookType) {
-    console.log('下記はbookShelf[]の中身')
+  @Mutation
+  resetBookShelf() {
+    this.bookShelf = []
+  }
+
+  @Mutation
+  deleteReview(bookId: string) {
+    const book: any = this.bookShelf.find((book) => book.bookId === bookId);
+    const index = this.bookShelf.indexOf(book);
+    this.bookShelf.splice(index, 1);
+  }
+
+  @Mutation
+  fetchBookShelf(book: bookType) {
+    console.log(book)
     this.bookShelf.push(book)
-    console.log(this.bookShelf)
-  } */
+  }
 }
 
 export const bookModule = getModule(Book);

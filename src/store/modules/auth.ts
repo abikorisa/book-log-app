@@ -43,9 +43,7 @@ class User extends VuexModule implements UserState {
   @Mutation
   setLoginUser(user: any | null): void {
     this.login_user = user
-    console.log(this.login_user)
     this.uid = this.login_user.uid
-    console.log(this.uid)
   }
 
   @Mutation

@@ -106,7 +106,6 @@ export default class Edit extends Vue {
     transition: all 0.3s;
     &:hover {
       background-color: #e5e5e5;
-      box-sizing: border-box;
       border-radius: 15px;
       color: #fcbd4c;
     }

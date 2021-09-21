@@ -28,8 +28,10 @@ export default class App extends Vue {
 
 <style lang="scss">
 @import 'https://use.fontawesome.com/releases/v5.13.0/css/all.css';
+@import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap');
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  // font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Kosugi Maru', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -130,5 +132,11 @@ select {
 
 select::-ms-expand {
   display: none;
+}
+
+.wrapper {
+  width: 80%;
+  max-width: 1170px;
+  margin: 0 auto;
 }
 </style>

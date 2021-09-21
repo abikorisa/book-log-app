@@ -17,9 +17,6 @@
         <button @click="openModal" class="btn__contents">
           <i class="fas fa-book-open"></i>本棚に追加する
         </button>
-        <!-- <button onclick="$route.params.book_image2" class="btn__contents">
-          <i class="fas fa-shopping-cart"></i>書店で詳細を見る
-        </button> -->
       </div>
       <div class="details__right">
         <table class="table">
@@ -156,16 +153,27 @@ caption {
 }
 
 .btn__contents {
-  background-color: #fff;
+  background-color: #fcbd4c;
+  color: #fff;
   border-radius: 5px;
   padding: 10px 20px;
   margin-bottom: 8px;
+  font-weight: 700;
   font-size: 15px;
   width: 220px;
   text-align: left;
+  transition: all 0.3s;
   > i {
     padding-right: 10px;
+    color: #fff;
+  }
+  &:hover {
+    background-color: #e5e5e5;
     color: #fcbd4c;
+
+    > i {
+      color: #fcbd4c;
+    }
   }
 }
 </style>

@@ -1,13 +1,13 @@
 <template>
   <header class="site-header">
-    <div class="site-header__wrapper">
+    <div class=" site-header__wrapper">
       <router-link to="/home"
         ><span class="brand">書籍管理アプリ</span></router-link
       >
       <nav class="nav">
         <div class="nav__wrapper">
-          <span><router-link to="/userpage">ユーザー</router-link></span>
-          <button @click="logout()"><span>ログアウト</span></button>
+          <span @click="toUserPage()">ユーザーページ</span>
+          <span @click="logout()">ログアウト</span>
         </div>
       </nav>
     </div>
@@ -32,6 +32,10 @@ export default class Header extends Vue {
     console.log(authModule.headerFlg);
     this.$router.push('/');
   }
+
+  toUserPage() {
+    this.$router.push('/userpage');
+  }
 }
 </script>
 
@@ -48,11 +52,17 @@ export default class Header extends Vue {
 }
 
 .site-header__wrapper {
-  padding: 2rem 6rem;
+  max-width: 1170px;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .nav__wrapper {
   display: flex;
+  span {
+    padding-left: 15px;
+    cursor: pointer;
+  }
 }
 
 @media (min-width: 600px) {
@@ -64,4 +74,15 @@ export default class Header extends Vue {
     padding-bottom: 0;
   }
 }
+/* @media (min-width: 600px) {
+  .nav__wrapper {
+    display: flex;
+    span {
+      color: #ffffff;
+      font-weight: bold;
+      padding-left: 15px;
+      cursor: pointer;
+    }
+  }
+} */
 </style>

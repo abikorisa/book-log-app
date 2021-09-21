@@ -1,15 +1,15 @@
 <template>
-  <div class="main__form">
-    <div class="signIn">
-      <h2 class="signIn__title">新規登録</h2>
-      <p class="signIn__subTitle">お名前</p>
-      <input class="signIn__input" type="text" />
-      <p class="signIn__subTitle">メールアドレス</p>
-      <input class="signIn__input" type="text" v-model="email" />
-      <p class="signIn__subTitle">パスワード</p>
-      <input class="signIn__input" type="text" v-model="password" /><br />
-      <button class="main-btn" @click="signIn()">登録する</button>
-      <a href="/">トップ画面に戻る</a>
+  <div class="wrapper">
+    <div class="resister__form">
+      <div class="signIn">
+        <h2 class="signIn__title">新規登録</h2>
+        <p class="signIn__subTitle">メールアドレス</p>
+        <input class="signIn__input" type="text" v-model="email" />
+        <p class="signIn__subTitle">パスワード</p>
+        <input class="signIn__input" type="password" v-model="password" /><br />
+        <button class="main-btn" @click="signIn()">登録する</button>
+        <router-link to="/">トップ画面に戻る</router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -25,6 +25,10 @@ export default class Register extends Vue {
   password = '';
   uid: string | null = null;
 
+  get getUid(): string | null {
+    return authModule.uid;
+  }
+
   signIn(): void {
     let email = this.email;
     let password = this.password;
@@ -36,8 +40,6 @@ export default class Register extends Vue {
         const user = userCredential.user;
         authModule.setLoginUser(user);
         authModule.changeFlgTrue();
-        console.log(authModule.headerFlg);
-        console.log('新規登録が完了しました！');
         this.$router.push('/home');
       });
   }
@@ -45,36 +47,8 @@ export default class Register extends Vue {
 </script>
 
 <style lang="scss">
-.main__form {
-  margin: 60px 0;
-  .signIn {
-    margin: 0 auto;
-    padding: 30px;
-    width: 600px;
-    border-radius: 10px;
-    background-color: #ffffff;
-    border: 20px solid #daf2e9;
-    a {
-      color: #8491a5;
-    }
-    &__title {
-      color: #fcbd4c;
-      font-size: 40px;
-      padding-bottom: 20px;
-    }
-    &__subtitle {
-      margin-top: 36px;
-      font-weight: bold;
-      font-size: 14px;
-      text-align: center;
-    }
-    &__input {
-      padding: 10px 20px;
-      width: 50%;
-      border: 1px solid #fcbd4c;
-      border-radius: 10px;
-      margin-bottom: 30px;
-    }
-  }
+.resister__form {
+  margin: 60px auto;
+  width: 600px;
 }
 </style>

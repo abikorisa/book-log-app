@@ -77,14 +77,10 @@ export default class Home extends Vue {
   created() {
     if (!this.getUid) {
       this.$router.push('/');
-      console.log('ログアウト状態なので遷移失敗（ ｉ _ ｉ ）');
-    } else {
-      console.log('ホーム画面に遷移できました！');
     }
   }
 
   serchBook(): void {
-    console.log(this.keyword);
     axios
       .get('https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404', {
         params: {
@@ -98,7 +94,6 @@ export default class Home extends Vue {
         if (res.data.Items.length > 0) {
           this.books = res.data.Items;
           bookModule.setKeyword(this.keyword);
-          console.log(this.books);
         } else {
           console.log('検索結果０');
         }
@@ -133,12 +128,14 @@ export default class Home extends Vue {
   padding-top: 20px;
   &__input {
     outline: 0;
+    padding: 10px;
     height: 2.2rem;
     margin: 0 -10px;
     max-width: 270px;
     border-radius: 10px;
     background: #fff;
     vertical-align: top;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
   }
   &__button {
     width: 40px;

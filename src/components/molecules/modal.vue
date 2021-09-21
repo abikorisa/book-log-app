@@ -92,13 +92,8 @@ export default class Modal extends Vue {
           .firestore()
           .collection(`users/${this.getUid}/bookShelf`)
           .doc(id)
-          .update({ bookId: id, bookDate: date })
-          .then(() => {
-            console.log('bookIdの追加が完了');
-          });
-        //ここでidが無事追加されている
+          .update({ bookId: id, bookDate: date });
         bookModule.addBookShelfId(id);
-        //bookModule.addBookShelf(book);
         this.clickEvent();
       });
   }

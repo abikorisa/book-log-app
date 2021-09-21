@@ -10,15 +10,15 @@
     <div class="details">
       <div class="details__left">
         <div class="details__image">
-          <p>ユーザー名</p>
+          <p>あなたの本棚</p>
           <img width="100px" src="../assets/bookicon.png" alt="" />
         </div>
         <div class="bookcount">
-          読んだ本<span class="bookNum">{{ bookShelf.length }}</span>
+          <span><i class="fas fa-book"></i>読んだ本</span
+          ><span class="bookNum">{{ bookShelf.length }}冊</span>
         </div>
-        <button @click="fetchBooks()">本棚の情報を取得する</button>
       </div>
-      <div class="details__right">
+      <div v-if="this.showShelf" class="details__right">
         <div class="caption">読んだ本の感想／編集</div>
         <ul v-for="book in bookShelf" :key="book.index">
           <li class="books">
@@ -47,6 +47,12 @@
               </div>
             </div>
           </li>
+        </ul>
+      </div>
+      <div v-else>
+        <div class="caption">読んだ本の感想／編集</div>
+        <ul>
+          <li class="books">追加された本はありません</li>
         </ul>
       </div>
     </div>
@@ -84,18 +90,39 @@ export default class UserPage extends Vue {
   editText = '';
   book: any = {};
   showEdit = false;
+  showShelf = true;
 
   get getUid() {
     return authModule.uid;
   }
 
+  get getBookShelf() {
+    return bookModule.bookShelf;
+  }
+
   created() {
     if (!this.getUid) {
       this.$router.push('/');
-      console.log('ログアウト状態なので遷移失敗（ ｉ _ ｉ ）');
-    } else {
-      console.log('ユーザー画面に遷移できました！');
     }
+    //firestoreからデータを取得
+    firebase
+      .firestore()
+      .collection(`users/${this.getUid}/bookShelf`)
+      .orderBy('bookDate', 'desc')
+      .get()
+      .then((snapShot) => {
+        snapShot.forEach((doc) => {
+          let book: any = doc.data();
+          bookModule.fetchBookShelf(book);
+          this.bookShelf = bookModule.bookShelf;
+          if (this.bookShelf.length >= 1) {
+            this.showShelf = true;
+          } else {
+            this.showShelf = false;
+          }
+        });
+      });
+    console.log(bookModule.bookShelf);
   }
 
   get getBookShelfId() {
@@ -111,10 +138,7 @@ export default class UserPage extends Vue {
   }
 
   deleteReview(bookId: string) {
-    console.log(`削除されるidは${bookId}です`);
-    let book: any = this.bookShelf.find((book) => book.bookId === bookId);
-    let index = this.bookShelf.indexOf(book);
-    this.bookShelf.splice(index, 1);
+    bookModule.deleteReview(bookId);
     firebase
       .firestore()
       .collection(`users/${this.getUid}/bookShelf`)
@@ -122,6 +146,11 @@ export default class UserPage extends Vue {
       .delete()
       .then(() => {
         console.log(`${bookId}の削除に成功しました`);
+        console.log(bookModule.bookShelf);
+        console.log(this.bookShelf);
+        if (this.bookShelf.length === 0) {
+          this.showShelf = false;
+        }
       });
   }
 
@@ -132,18 +161,9 @@ export default class UserPage extends Vue {
     this.openEdit();
   }
 
-  fetchBooks() {
-    firebase
-      .firestore()
-      .collection(`users/${this.getUid}/bookShelf`)
-      .orderBy('bookDate', 'desc')
-      .get()
-      .then((snapShot) => {
-        snapShot.forEach((doc) => {
-          let book: any = doc.data();
-          this.bookShelf.push(book);
-        });
-      });
+  destroyed() {
+    bookModule.resetBookShelf();
+    this.bookShelf = [];
   }
 }
 </script>
@@ -159,7 +179,6 @@ export default class UserPage extends Vue {
   }
   &__image {
     background-color: #fff;
-
     width: 216px;
     margin: 0 auto 10px auto;
     padding-top: 10px;
@@ -186,7 +205,6 @@ export default class UserPage extends Vue {
     position: relative;
     .bookReview {
       &__date {
-        border-bottom: 1px solid #bbb;
         text-align: left;
         padding-left: 20px;
       }
@@ -239,5 +257,18 @@ export default class UserPage extends Vue {
   text-align: left;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+}
+
+.bookcount {
+  display: flex;
+  background-color: #fff;
+  padding: 10px 20px;
+  margin: 0 auto;
+  width: 216px;
+  border-radius: 5px;
+  justify-content: space-between;
+  span > i {
+    padding-right: 5px;
+  }
 }
 </style>
