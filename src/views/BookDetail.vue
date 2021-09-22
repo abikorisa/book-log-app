@@ -73,14 +73,14 @@ export default class Detail extends Vue {
   bookInfo = this.$route.params;
   showContent = false;
 
-  get getUid() {
+  get getUid(): string | null {
     return authModule.uid;
   }
 
-  openModal() {
+  openModal(): void {
     this.showContent = true;
   }
-  closeModal() {
+  closeModal(): void {
     this.showContent = false;
   }
 }

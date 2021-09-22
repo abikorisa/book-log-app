@@ -20,7 +20,7 @@ import { authModule } from './store/modules/auth';
 export default class App extends Vue {
   headerFlg = authModule.headerFlg;
 
-  get getFlg() {
+  get getFlg(): boolean {
     return authModule.headerFlg;
   }
 }

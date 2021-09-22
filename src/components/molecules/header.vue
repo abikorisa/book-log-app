@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { authModule } from '@/store/modules/auth';
 import firebase from 'firebase';
 
@@ -25,7 +25,7 @@ export default class Header extends Vue {
     return authModule.uid;
   }
 
-  logout() {
+  logout(): void {
     firebase.auth().signOut();
     authModule.deleteUser();
     authModule.changeFlgFalse();
@@ -33,7 +33,7 @@ export default class Header extends Vue {
     this.$router.push('/');
   }
 
-  toUserPage() {
+  toUserPage(): void {
     this.$router.push('/userpage');
   }
 }

@@ -36,7 +36,7 @@ class User extends VuexModule implements UserState {
   } */
 
   @Mutation
-  deleteUser() {
+  deleteUser(): void {
     this.uid = null
   }
 
@@ -47,11 +47,11 @@ class User extends VuexModule implements UserState {
   }
 
   @Mutation
-  changeFlgTrue() {
+  changeFlgTrue(): void {
     this.headerFlg = true
   }
   @Mutation
-  changeFlgFalse() {
+  changeFlgFalse(): void {
     this.headerFlg = false
   }
 

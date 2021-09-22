@@ -65,7 +65,7 @@ export default class Home extends Vue {
   keyword = bookModule.keyword;
   books = [];
 
-  get getUid() {
+  get getUid(): string | null {
     return authModule.uid;
   }
 
@@ -74,7 +74,7 @@ export default class Home extends Vue {
     return bookModule.keyword;
   }
 
-  created() {
+  created(): void {
     if (!this.getUid) {
       this.$router.push('/');
     }

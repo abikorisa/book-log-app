@@ -3,7 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Home from '../views/Home.vue'
-import About from '../views/About.vue'
+//import About from '../views/About.vue'
 import Detail from '../views/BookDetail.vue'
 import UserPage from '../views/UserPage.vue'
 
@@ -24,12 +24,12 @@ const routes: Array<RouteConfig> = [
     path: '/home',
     name: 'Home',
     component: Home
-  },
+  },/* 
   {
     path: '/about',
     name: 'About',
     component: About
-  },
+  }, */
   {
     path: '/detail',
     name: 'Detail',

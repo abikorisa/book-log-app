@@ -1,5 +1,5 @@
 // ~/store/user.ts
-import { Module, VuexModule, Mutation, Action, getModule } from "vuex-module-decorators";
+import { Module, VuexModule, Mutation, getModule } from "vuex-module-decorators";
 import store from "@/store/store";
 
 // Stateの型を定義する

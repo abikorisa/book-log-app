@@ -67,7 +67,7 @@ export default class Edit extends Vue {
     return authModule.uid;
   }
 
-  updateReview(book: any) {
+  updateReview(book: any): void {
     let id = book.bookId;
     book.bookReview[0].reviewDate = this.editDate;
     book.bookReview[0].reviewText = this.editText;
