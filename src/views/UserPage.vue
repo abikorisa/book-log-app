@@ -122,7 +122,6 @@ export default class UserPage extends Vue {
           }
         });
       });
-    console.log(bookModule.bookShelf);
   }
 
   get getBookShelfId() {

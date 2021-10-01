@@ -3,16 +3,16 @@
     <Modal
       v-show="showContent"
       @from-child="closeModal"
-      :book_title="this.$route.params.book_title"
-      :book_author="this.$route.params.book_author"
-      :book_image="this.$route.params.book_image"
+      :book_title="this.bookInfo.title"
+      :book_author="this.bookInfo.author"
+      :book_image="this.bookInfo.mediumImageUrl"
     />
     <div class="details">
       <div class="details__left">
         <div class="details__image">
-          <img :src="$route.params.book_image2" alt="" />
-          <p>{{ this.$route.params.book_title }}</p>
-          <p>{{ this.$route.params.book_author }}</p>
+          <img :src="this.bookInfo.largeImageUrl" alt="" />
+          <p>{{ this.bookInfo.title }}</p>
+          <p>{{ this.bookInfo.author }}</p>
         </div>
         <button @click="openModal" class="btn__contents">
           <i class="fas fa-book-open"></i>本棚に追加する
@@ -25,33 +25,31 @@
           </caption>
           <tr class="table__row">
             <th class="table__head">タイトル</th>
-            <td class="table__body">{{ this.$route.params.book_title }}</td>
+            <td class="table__body">{{ this.bookInfo.title }}</td>
           </tr>
           <tr class="table__row">
             <th class="table__head">著者名</th>
-            <td class="table__body">{{ this.$route.params.book_author }}</td>
+            <td class="table__body">{{ this.bookInfo.author }}</td>
           </tr>
           <tr class="table__row">
             <th class="table__head">出版社</th>
             <td class="table__body">
-              {{ this.$route.params.book_publisherName }}
+              {{ this.bookInfo.publisherName }}
             </td>
           </tr>
           <tr class="table__row">
             <th class="table__head">発売日</th>
-            <td class="table__body">{{ this.$route.params.book_salesDate }}</td>
+            <td class="table__body">{{ this.bookInfo.salesDate }}</td>
           </tr>
           <tr class="table__row">
             <th class="table__head">価格</th>
             <td class="table__body">
-              {{
-                this.$route.params.book_price.toLocaleString('ja-JP')
-              }}円(税込)
+              {{ this.bookInfo.itemPrice.toLocaleString('ja-JP') }}円(税込)
             </td>
           </tr>
           <tr class="table__row">
             <th class="table__head">あらすじ</th>
-            <td class="table__body">{{ this.$route.params.book_caption }}</td>
+            <td class="table__body">{{ this.bookInfo.itemCaption }}</td>
           </tr>
         </table>
       </div>
@@ -62,7 +60,13 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { authModule } from '@/store/modules/auth';
+import { bookModule } from '@/store/modules/book';
 import Modal from '@/components/molecules/modal.vue';
+
+export type ParamsType = {
+  bookInfo: any;
+  id: string;
+};
 
 @Component({
   components: {
@@ -70,11 +74,50 @@ import Modal from '@/components/molecules/modal.vue';
   },
 })
 export default class Detail extends Vue {
-  bookInfo = this.$route.params;
+  bookInfo: ParamsType = {
+    bookInfo: {},
+    id: '',
+  };
   showContent = false;
+  selectedBooksId = 0;
 
   get getUid(): string | null {
     return authModule.uid;
+  }
+
+  get getParams() {
+    return bookModule.params;
+  }
+
+  created(): void {
+    if (!this.getUid) {
+      this.$router.push('/');
+    } else {
+      /* if (this.$route.params) {
+        this.bookInfo = this.$route.params.bookInfo;
+        this.setParams();
+      } else {
+        let bookInfo = sessionStorage.getItem('catch-params');
+        if (bookInfo != null) {
+          this.bookInfo = JSON.parse(bookInfo);
+        }
+      } */
+      if (!this.bookInfo) {
+        console.log('パラムスがありません');
+        console.log(this.$route.params);
+      } else {
+        let bookInfo = this.$route.params;
+        bookModule.setParams(bookInfo);
+        let books = bookModule.params;
+        this.bookInfo = books.bookInfo;
+        this.setParams();
+      }
+    }
+  }
+
+  setParams(): void {
+    sessionStorage.setItem('catch-params', JSON.stringify(this.bookInfo));
+    console.log('paramsをセットしました');
   }
 
   openModal(): void {

@@ -8,6 +8,11 @@ interface reviewDate {
   reviewText: string;
 }
 
+interface paramsDate {
+  bookInfo: any;
+  id: string;
+}
+
 interface bookType {
   bookTitle: string;
   bookAuthor: string;
@@ -27,7 +32,7 @@ class Book extends VuexModule implements BookState {
   bookShelfId: string | null = null;
   bookShelf: bookType[] = []
   deleteTargetId: string | null = null;
-  keyword = ''
+  params: paramsDate = { bookInfo: {}, id: '' }
 
   get getBookShelfId() {
     return (id: string) => {
@@ -36,9 +41,10 @@ class Book extends VuexModule implements BookState {
     }
   }
 
-  get getKeyword() {
-    return this.keyword
+  get getParams() {
+    return this.params
   }
+
 
   @Mutation
   addBookShelfId(id: string) {
@@ -46,8 +52,8 @@ class Book extends VuexModule implements BookState {
   }
 
   @Mutation
-  setKeyword(keyword: string) {
-    this.keyword = keyword
+  setParams(bookInfo: any) {
+    this.params = bookInfo
   }
 
   @Mutation

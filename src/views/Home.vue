@@ -13,15 +13,8 @@
             :to="{
               name: 'Detail',
               params: {
-                book_title: book.Item.title,
-                book_author: book.Item.author,
-                book_publisherName: book.Item.publisherName,
-                book_salesDate: book.Item.salesDate,
-                book_price: book.Item.itemPrice,
-                book_image: book.Item.mediumImageUrl,
-                book_image2: book.Item.largeImageUrl,
-                book_caption: book.Item.itemCaption,
-                book_url: book.Item.itemUrl,
+                bookInfo: book.Item,
+                id: book.Item.isbn,
               },
             }"
           >
@@ -57,21 +50,16 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { authModule } from '@/store/modules/auth';
-import { bookModule } from '@/store/modules/book';
 import axios from 'axios';
 
 @Component
 export default class Home extends Vue {
-  keyword = bookModule.keyword;
+  keyword = 'Vue.js';
   books = [];
+  selectedBooksId = 0;
 
   get getUid(): string | null {
     return authModule.uid;
-  }
-
-  //一応キーワードを保持している
-  get getKeyword() {
-    return bookModule.keyword;
   }
 
   created(): void {
@@ -80,24 +68,39 @@ export default class Home extends Vue {
     }
   }
 
-  serchBook(): void {
+  //axiosで検索結果を取得
+  getBooks(): void {
     axios
       .get('https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404', {
         params: {
           applicationId: '1027306809265886299',
           title: this.keyword,
-          //author: this.keyword,
         },
       })
       .then((res) => {
         this.books = [];
         if (res.data.Items.length > 0) {
           this.books = res.data.Items;
-          bookModule.setKeyword(this.keyword);
         } else {
           console.log('検索結果０');
         }
       });
+  }
+
+  //sessionStorageへ保存
+  serchBook(): void {
+    sessionStorage.setItem('search-params', this.keyword);
+    this.getBooks();
+  }
+
+  mounted() {
+    if (sessionStorage.hasOwnProperty.call(sessionStorage, 'search-params')) {
+      let keyword = sessionStorage.getItem('search-params');
+      if (keyword != null) {
+        this.keyword = keyword;
+      }
+    }
+    this.getBooks();
   }
 }
 </script>
