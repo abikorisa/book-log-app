@@ -70,7 +70,7 @@ class Book extends VuexModule implements BookState {
 
   @Mutation
   fetchBookShelf(book: bookType) {
-    console.log(book)
+    //console.log(book)
     this.bookShelf.push(book)
   }
 }

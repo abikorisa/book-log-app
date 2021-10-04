@@ -89,29 +89,25 @@ export default class Detail extends Vue {
     return bookModule.params;
   }
 
-  created(): void {
+  created() {
+    if (this.$route.params.id) {
+      let bookInfo = this.$route.params;
+      bookModule.setParams(bookInfo);
+      let books = bookModule.params;
+      this.bookInfo = books.bookInfo;
+      this.setParams();
+      console.log(bookModule.params.id);
+    } else {
+      /* let bookInfo = JSON.parse(sessionStorage.getItem('catch-params'))
+      bookModule.setParams(bookInfo);
+      let books = bookModule.params;
+      this.bookInfo = books.bookInfo;
+      this.setParams();
+      console.log(bookModule.params.id); */
+      console.log('パラムスが空です');
+    }
     if (!this.getUid) {
       this.$router.push('/');
-    } else {
-      /* if (this.$route.params) {
-        this.bookInfo = this.$route.params.bookInfo;
-        this.setParams();
-      } else {
-        let bookInfo = sessionStorage.getItem('catch-params');
-        if (bookInfo != null) {
-          this.bookInfo = JSON.parse(bookInfo);
-        }
-      } */
-      if (!this.bookInfo) {
-        console.log('パラムスがありません');
-        console.log(this.$route.params);
-      } else {
-        let bookInfo = this.$route.params;
-        bookModule.setParams(bookInfo);
-        let books = bookModule.params;
-        this.bookInfo = books.bookInfo;
-        this.setParams();
-      }
     }
   }
 
