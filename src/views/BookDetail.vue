@@ -113,7 +113,6 @@ export default class Detail extends Vue {
 
   setParams(): void {
     sessionStorage.setItem('catch-params', JSON.stringify(this.bookInfo));
-    console.log('paramsをセットしました');
   }
 
   openModal(): void {

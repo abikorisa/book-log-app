@@ -1,6 +1,9 @@
 <template>
   <div>
     <div class="serchFrom">
+      <p v-if="this.serchFlg">
+        本が見つかりませんでした。別のキーワードも検索してみましょう。
+      </p>
       <input class="serchFrom__input" type="text" v-model="keyword" />
       <button class="serchFrom__button" @click="serchBook()">
         <i class="fas fa-search"></i>
@@ -57,6 +60,7 @@ export default class Home extends Vue {
   keyword = 'Vue.js';
   books = [];
   selectedBooksId = 0;
+  serchFlg = false;
 
   get getUid(): string | null {
     return authModule.uid;
@@ -75,14 +79,21 @@ export default class Home extends Vue {
         params: {
           applicationId: '1027306809265886299',
           title: this.keyword,
+          //author: this.keyword,
         },
       })
       .then((res) => {
         this.books = [];
-        if (res.data.Items.length > 0) {
-          this.books = res.data.Items;
-        } else {
+        if (res.data.Items.length === 0) {
+          this.serchFlg = true;
           console.log('検索結果０');
+          //下記処理の見直し
+          if (this.keyword === '') {
+            console.log('空の検索ワード');
+          }
+        } else {
+          this.serchFlg = false;
+          this.books = res.data.Items;
         }
       });
   }

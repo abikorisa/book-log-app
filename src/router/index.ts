@@ -24,12 +24,7 @@ const routes: Array<RouteConfig> = [
     path: '/home',
     name: 'Home',
     component: Home
-  },/* 
-  {
-    path: '/about',
-    name: 'About',
-    component: About
-  }, */
+  },
   {
     path: '/detail/:id',
     name: 'Detail',
