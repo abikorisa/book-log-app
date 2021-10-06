@@ -50,10 +50,14 @@
         </ul>
       </div>
       <div v-else>
-        <div class="caption">読んだ本の感想／編集</div>
-        <ul>
-          <li class="books">追加された本はありません</li>
-        </ul>
+        <div class="details__right">
+          <div class="search-content">
+            <div class="search-content__title">追加された本はありません</div>
+            <button class="search-content__btn" @click="backToTop">
+              <i class="fas fa-book-open"></i>本を検索してみましょう
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -133,6 +137,9 @@ export default class UserPage extends Vue {
   /* get getBookShelfId() {
     return bookModule.bookShelfId;
   } */
+  backToTop() {
+    this.$router.push('/home');
+  }
 
   closeEdit() {
     this.showEdit = false;
@@ -276,6 +283,47 @@ export default class UserPage extends Vue {
   justify-content: space-between;
   span > i {
     padding-right: 5px;
+  }
+}
+
+.search-content {
+  width: 630px;
+  margin: 0 auto;
+  padding: 30px 0;
+  background-color: #fcbd4c;
+  border-radius: 5px;
+  &__title {
+    width: 60%;
+    margin: 0 auto;
+    border-bottom: 2px solid #fff;
+    margin-bottom: 20px;
+    font-size: 30px;
+    color: #fff;
+    font-weight: 700;
+  }
+  &__btn {
+    background-color: #fff;
+    color: #fcbd4c;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin-bottom: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    width: 240px;
+    text-align: left;
+    transition: all 0.3s;
+    > i {
+      padding-right: 10px;
+      color: #fcbd4c;
+    }
+    &:hover {
+      background-color: #eee;
+      color: #fcbd4c;
+
+      > i {
+        color: #fcbd4c;
+      }
+    }
   }
 }
 </style>
