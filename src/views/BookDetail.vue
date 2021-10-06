@@ -96,7 +96,6 @@ export default class Detail extends Vue {
       let books = bookModule.params;
       this.bookInfo = books.bookInfo;
       this.setParams();
-      console.log(bookModule.params.id);
     } else {
       /* let bookInfo = JSON.parse(sessionStorage.getItem('catch-params'))
       bookModule.setParams(bookInfo);

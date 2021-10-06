@@ -6,6 +6,7 @@ import store from "@/store/store";
 export interface UserState {
   uid: string | null;
   login_user: any | null,
+  username: string
   headerFlg: boolean
 }
 
@@ -14,13 +15,10 @@ export interface UserState {
 class User extends VuexModule implements UserState {
   uid: string | null = null;
   login_user: any | null = null;
+  username = ''
   headerFlg = false;
 
-  // getterはデコレータなしのgetアクセサで書く
-  get isLogin(): boolean {
-    return this.uid != null;
-  }
-
+  //getters----------------------------------------------------------------------
   get getUid(): string | null {
     return this.uid
   }
@@ -29,12 +27,11 @@ class User extends VuexModule implements UserState {
     return this.headerFlg
   }
 
-  // mutationはデコレータで指定
-  /* @Mutation
-  setUser(uid: string | null): void {
-    this.uid = uid;
-  } */
+  get getUserName(): string {
+    return this.username
+  }
 
+  //mutations----------------------------------------------------------------------
   @Mutation
   deleteUser(): void {
     this.uid = null
@@ -44,6 +41,11 @@ class User extends VuexModule implements UserState {
   setLoginUser(user: any | null): void {
     this.login_user = user
     this.uid = this.login_user.uid
+  }
+
+  @Mutation
+  setUserName(user: any): void {
+    this.username = user
   }
 
   @Mutation

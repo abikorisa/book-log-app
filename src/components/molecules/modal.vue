@@ -12,7 +12,7 @@
         </div>
         <div class="modal__right">
           <div class="modal__form">
-            <p>読み終わった日<span class="must">必須</span></p>
+            <p>読み終わった日</p>
             <input
               v-model="review.reviewDate"
               class="modal__input"
@@ -20,7 +20,7 @@
             />
           </div>
           <div class="modal__form">
-            <p>感想・レビュー<span class="must">必須</span></p>
+            <p>感想・レビュー</p>
             <textarea
               v-model="review.reviewText"
               class="modal__input"
@@ -95,6 +95,7 @@ export default class Modal extends Vue {
           .update({ bookId: id, bookDate: date });
         bookModule.addBookShelfId(id);
         this.clickEvent();
+        alert(`本棚に「${this.book_title}」を追加しました。`);
       });
   }
 

@@ -53,6 +53,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { authModule } from '@/store/modules/auth';
+import firebase from 'firebase';
 import axios from 'axios';
 
 @Component
@@ -70,35 +71,50 @@ export default class Home extends Vue {
     if (!this.getUid) {
       this.$router.push('/');
     }
+    this.fetchUsername();
   }
 
   //axiosで検索結果を取得
   getBooks(): void {
+    if (this.keyword === ' ' || this.keyword === '　') {
+      this.keyword = '';
+      this.serchFlg = true;
+    }
     axios
       .get('https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404', {
         params: {
           applicationId: '1027306809265886299',
           title: this.keyword,
-          //author: this.keyword,
         },
       })
       .then((res) => {
         this.books = [];
         if (res.data.Items.length === 0) {
           this.serchFlg = true;
-          console.log('検索結果０');
-          //下記処理の見直し
-          if (this.keyword === '') {
-            console.log('空の検索ワード');
-          }
+          console.log('検索結果はありません');
         } else {
           this.serchFlg = false;
           this.books = res.data.Items;
         }
+      })
+      .catch((error) => {
+        console.log('エラーです〜');
       });
   }
 
-  //sessionStorageへ保存
+  fetchUsername(): void {
+    firebase
+      .firestore()
+      .collection(`users/${this.getUid}/userInfo`)
+      .get()
+      .then((snapShot) => {
+        snapShot.forEach((doc) => {
+          let user: any = doc.data();
+          authModule.setUserName(user);
+        });
+      });
+  }
+
   serchBook(): void {
     sessionStorage.setItem('search-params', this.keyword);
     this.getBooks();

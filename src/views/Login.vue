@@ -5,17 +5,46 @@
         <div class="signIn">
           <div class="position-center panel">
             <h2 class="signIn__title">書籍管理アプリ</h2>
+            <p class="error-message" v-if="loginError">
+              入力に不備があります
+            </p>
+            <ValidationObserver ref="observer" v-slot="{ invalid }">
+              <p class="signIn__subTitle">メールアドレス</p>
+              <validation-provider
+                v-slot="{ errors }"
+                name="メールアドレス"
+                rules="required|email"
+              >
+                <input class="signIn__input" type="email" v-model="email" />
+                <div class="signIn__error">
+                  <p>
+                    {{ errors[0] }}
+                  </p>
+                </div>
+              </validation-provider>
+              <validation-provider
+                v-slot="{ errors }"
+                name="パスワード"
+                rules="required"
+              >
+                <p class="signIn__subTitle">パスワード</p>
 
-            <p class="signIn__subTitle">メールアドレス</p>
-            <input class="signIn__input" type="text" v-model="email" />
-            <p class="signIn__subTitle">パスワード</p>
-            <input
-              class="signIn__input"
-              type="password"
-              v-model="password"
-            /><br />
-            <button class="main-btn" @click="signIn">ログイン</button>
-            <router-link to="/register">新規登録はこちら</router-link>
+                <input
+                  class="signIn__input"
+                  type="password"
+                  v-model="password"
+                />
+                <div class="signIn__error">
+                  <p>
+                    {{ errors[0] }}
+                  </p>
+                </div>
+              </validation-provider>
+              <button class="main-btn" :disabled="invalid" @click="signIn">
+                ログイン
+              </button>
+              <router-link to="/register">新規登録はこちら</router-link>
+            </ValidationObserver>
           </div>
         </div>
       </div>
@@ -31,20 +60,32 @@
 import Vue from 'vue';
 import { authModule } from '@/store/modules/auth';
 import firebase from 'firebase';
+import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
+import { required, email } from 'vee-validate/dist/rules';
+extend('email', {
+  ...email,
+  message: '※入力形式が正しくありません',
+});
+extend('required', {
+  ...required,
+  message: '※{_field_}は必須項目です',
+});
 
 export type DataType = {
   email: string;
   password: string;
+  loginError: boolean;
 };
 
 export default Vue.extend({
   name: 'Login',
-  components: {},
+  components: { ValidationObserver, ValidationProvider },
   props: {},
   data(): DataType {
     return {
       email: '',
       password: '',
+      loginError: false,
     };
   },
   computed: {},
@@ -56,11 +97,16 @@ export default Vue.extend({
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
+          this.loginError = false;
           const user = userCredential.user;
           authModule.setLoginUser(user);
           authModule.changeFlgTrue();
-          console.log('ログインが完了しました！');
           this.$router.push('/home');
+        })
+        .catch(() => {
+          this.loginError = true;
+          this.email = '';
+          this.password = '';
         });
     },
   },
@@ -68,7 +114,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-//flex(よりわかりやすい名前に置き換える)
 .home {
   width: 60%;
   margin: 0 auto;
@@ -99,11 +144,17 @@ export default Vue.extend({
   }
   &__input {
     padding: 10px 20px;
-    margin-bottom: 30px;
     width: 230px;
     border: 1px solid #fcbd4c;
     border-radius: 10px;
     font-family: Avenir, Helvetica, Arial, sans-serif;
+  }
+  &__error {
+    margin-bottom: 20px;
+    > p {
+      font-size: 15px;
+      color: #fcbd4c;
+    }
   }
 }
 
@@ -140,5 +191,9 @@ export default Vue.extend({
     background-color: #e5e5e5;
     color: #fcbd4c;
   }
+}
+
+.error-message {
+  font-size: 13px;
 }
 </style>

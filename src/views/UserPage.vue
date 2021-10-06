@@ -10,7 +10,7 @@
     <div class="details">
       <div class="details__left">
         <div class="details__image">
-          <p>あなたの本棚</p>
+          <p>{{ getUserName.name }}さんの本棚</p>
           <img width="100px" src="../assets/bookicon.png" alt="" />
         </div>
         <div class="bookcount">
@@ -96,6 +96,10 @@ export default class UserPage extends Vue {
     return authModule.uid;
   }
 
+  get getUserName(): string {
+    return authModule.username;
+  }
+
   get getBookShelf() {
     return bookModule.bookShelf;
   }
@@ -115,18 +119,20 @@ export default class UserPage extends Vue {
           let book: any = doc.data();
           bookModule.fetchBookShelf(book);
           this.bookShelf = bookModule.bookShelf;
-          if (this.bookShelf.length >= 1) {
-            this.showShelf = true;
-          } else {
-            this.showShelf = false;
-          }
         });
+      })
+      .then(() => {
+        if (this.bookShelf.length > 0) {
+          this.showShelf = true;
+        } else {
+          this.showShelf = false;
+        }
       });
   }
 
-  get getBookShelfId() {
+  /* get getBookShelfId() {
     return bookModule.bookShelfId;
-  }
+  } */
 
   closeEdit() {
     this.showEdit = false;
@@ -137,20 +143,22 @@ export default class UserPage extends Vue {
   }
 
   deleteReview(bookId: string) {
-    bookModule.deleteReview(bookId);
-    firebase
-      .firestore()
-      .collection(`users/${this.getUid}/bookShelf`)
-      .doc(bookId)
-      .delete()
-      .then(() => {
-        console.log(`${bookId}の削除に成功しました`);
-        console.log(bookModule.bookShelf);
-        console.log(this.bookShelf);
-        if (this.bookShelf.length === 0) {
-          this.showShelf = false;
-        }
-      });
+    if (window.confirm(`削除してもよろしいですか？`)) {
+      bookModule.deleteReview(bookId);
+      firebase
+        .firestore()
+        .collection(`users/${this.getUid}/bookShelf`)
+        .doc(bookId)
+        .delete()
+        .then(() => {
+          console.log(`${bookId}の削除に成功しました`);
+          console.log(bookModule.bookShelf);
+          console.log(this.bookShelf);
+          if (this.bookShelf.length === 0) {
+            this.showShelf = false;
+          }
+        });
+    }
   }
 
   editReview(book: BookShelfType) {

@@ -13,11 +13,11 @@
         </div>
         <div class="modal__right">
           <div class="modal__form">
-            <p>読み終わった日<span class="must">必須</span></p>
+            <p>読み終わった日</p>
             <input v-model="editDate" class="modal__input" type="date" />
           </div>
           <div class="modal__form">
-            <p>感想・レビュー<span class="must">必須</span></p>
+            <p>感想・レビュー</p>
             <textarea
               v-model="editText"
               class="modal__input"
@@ -81,6 +81,7 @@ export default class Edit extends Vue {
         this.editDate = '';
         this.editText = '';
         this.clickEvent();
+        alert(`「${book.bookTitle}」をレビューを編集しました。`);
       });
   }
 

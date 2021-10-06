@@ -6,7 +6,7 @@
       >
       <nav class="nav">
         <div class="nav__wrapper">
-          <span @click="toUserPage()">ユーザーページ</span>
+          <span @click="toUserPage()">{{ getUserName.name }}さんのページ</span>
           <span @click="logout()">ログアウト</span>
         </div>
       </nav>
@@ -23,6 +23,10 @@ import firebase from 'firebase';
 export default class Header extends Vue {
   get getUid(): string | null {
     return authModule.uid;
+  }
+
+  get getUserName(): string {
+    return authModule.username;
   }
 
   logout(): void {
