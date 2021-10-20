@@ -32,7 +32,9 @@
         </div>
       </div>
       <div class="editBtn">
-        <button class="editBtn__add" @click="addBookShelf()">追加する</button>
+        <button class="editBtn__add" @click="addBookShelf()">
+          <i class="fas fa-bookmark"></i>追加する
+        </button>
         <button class="editBtn__back" @click="clickEvent">
           <i class="fas fa-times"></i>
         </button>
@@ -42,14 +44,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { authModule } from '@/store/modules/auth';
-import { bookModule } from '@/store/modules/book';
-import firebase from 'firebase';
+import { Component, Prop, Vue } from 'vue-property-decorator'
+import { authModule } from '@/store/modules/auth'
+import { bookModule } from '@/store/modules/book'
+import firebase from 'firebase'
 
 interface reviewDate {
-  reviewDate: string;
-  reviewText: string;
+  reviewDate: string
+  reviewText: string
 }
 
 @Component
@@ -57,19 +59,22 @@ export default class Modal extends Vue {
   review: reviewDate = {
     reviewDate: '',
     reviewText: '',
-  };
+  }
 
   @Prop({ default: '' })
-  book_title!: string;
+  book_title!: string
 
   @Prop({ default: '' })
-  book_image!: string;
+  book_image!: string
 
   @Prop({ default: '' })
-  book_author!: string;
+  book_image2!: string
+
+  @Prop({ default: '' })
+  book_author!: string
 
   get getUid(): string | null {
-    return authModule.uid;
+    return authModule.uid
   }
 
   addBookShelf(): void {
@@ -79,32 +84,32 @@ export default class Modal extends Vue {
       bookImage: this.book_image,
       bookReview: [this.review],
       bookId: '',
-    };
+    }
     firebase
       .firestore()
       .collection(`users/${this.getUid}/bookShelf`)
       .add(book)
       .then((doc) => {
-        console.log('処理が通りました٩( ᐛ )وいえい');
-        let id: any = doc.id;
-        let date = new Date();
+        console.log('処理が通りました٩( ᐛ )وいえい')
+        let id: any = doc.id
+        let date = new Date()
         firebase
           .firestore()
           .collection(`users/${this.getUid}/bookShelf`)
           .doc(id)
-          .update({ bookId: id, bookDate: date });
-        bookModule.addBookShelfId(id);
-        this.clickEvent();
-        alert(`本棚に「${this.book_title}」を追加しました。`);
-      });
+          .update({ bookId: id, bookDate: date })
+        bookModule.addBookShelfId(id)
+        this.clickEvent()
+        alert(`本棚に「${this.book_title}」を追加しました。`)
+      })
   }
 
   clickEvent(): void {
-    this.$emit('from-child');
+    this.$emit('from-child')
   }
   // closeボタン意外の余白を押してもモーダルが消える
   stopEvent(event: Event): void {
-    event.stopPropagation();
+    event.stopPropagation()
   }
 }
 </script>
@@ -155,7 +160,7 @@ export default class Modal extends Vue {
   margin-bottom: 20px;
   .modal__left {
     width: 20%;
-    border-right: 1px dashed #bbb;
+    // border-right: 1px dashed #bbb;
   }
   .modal__right {
     margin: 0 20px;

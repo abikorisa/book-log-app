@@ -1,29 +1,39 @@
 <template>
   <div id="app">
-    <Header v-if="getFlg" />
+    <Header />
     <router-view />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import Header from '@/components/molecules/header.vue';
-import Login from './views/Login.vue';
-import { authModule } from './store/modules/auth';
+import { Component, Vue } from 'vue-property-decorator'
+import Header from '@/components/molecules/header.vue'
+import { authModule } from '@/store/modules/auth'
+import firebase from 'firebase'
 
 @Component({
   components: {
-    Login,
     Header,
   },
 })
 export default class App extends Vue {
-  headerFlg = authModule.headerFlg;
+  /* 
+  headerFlg = authModule.headerFlg
 
   get getFlg(): boolean {
-    return authModule.headerFlg;
+    return authModule.headerFlg
+  } */
+
+  created(): void {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log('ログイン状態にあります')
+        authModule.setLoginUser(user)
+      } else {
+        console.log('ログアウト状態にあります')
+      }
+    })
   }
-  
 }
 </script>
 

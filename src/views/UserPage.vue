@@ -64,24 +64,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { authModule } from '@/store/modules/auth';
-import { bookModule } from '@/store/modules/book';
-import Edit from '@/components/molecules/edit.vue';
-import firebase from 'firebase';
+import { Component, Vue } from 'vue-property-decorator'
+import { authModule } from '@/store/modules/auth'
+import { bookModule } from '@/store/modules/book'
+import Edit from '@/components/molecules/edit.vue'
+import firebase from 'firebase'
 
 export type reviewType = {
-  reviewDate: string;
-  reviewText: string;
-};
+  reviewDate: string
+  reviewText: string
+}
 
 export type BookShelfType = {
-  bookAuthor: string;
-  bookImage: string;
-  bookTitle: string;
-  bookReview: reviewType[];
-  bookId: string;
-};
+  bookAuthor: string
+  bookImage: string
+  bookTitle: string
+  bookReview: reviewType[]
+  bookId: string
+}
 
 @Component({
   components: {
@@ -89,95 +89,92 @@ export type BookShelfType = {
   },
 })
 export default class UserPage extends Vue {
-  bookShelf: BookShelfType[] = [];
-  editDate = '';
-  editText = '';
-  book: any = {};
-  showEdit = false;
-  showShelf = true;
+  bookShelf: BookShelfType[] = []
+  editDate = ''
+  editText = ''
+  book: any = {}
+  showEdit = false
+  showShelf = true
 
   get getUid() {
-    return authModule.uid;
+    return authModule.uid
   }
 
   get getUserName(): string {
-    return authModule.username;
+    return authModule.username
   }
 
   get getBookShelf() {
-    return bookModule.bookShelf;
+    return bookModule.bookShelf
   }
 
   created() {
     if (!this.getUid) {
-      this.$router.push('/');
+      this.$router.push('/')
+    } else {
+      firebase
+        .firestore()
+        .collection(`users/${this.getUid}/bookShelf`)
+        .orderBy('bookDate', 'desc')
+        .get()
+        .then((snapShot) => {
+          snapShot.forEach((doc) => {
+            let book: any = doc.data()
+            bookModule.fetchBookShelf(book)
+            this.bookShelf = bookModule.bookShelf
+          })
+        })
+        .then(() => {
+          if (this.bookShelf.length > 0) {
+            this.showShelf = true
+          } else {
+            this.showShelf = false
+          }
+        })
     }
-    //firestoreからデータを取得
-    firebase
-      .firestore()
-      .collection(`users/${this.getUid}/bookShelf`)
-      .orderBy('bookDate', 'desc')
-      .get()
-      .then((snapShot) => {
-        snapShot.forEach((doc) => {
-          let book: any = doc.data();
-          bookModule.fetchBookShelf(book);
-          this.bookShelf = bookModule.bookShelf;
-        });
-      })
-      .then(() => {
-        if (this.bookShelf.length > 0) {
-          this.showShelf = true;
-        } else {
-          this.showShelf = false;
-        }
-      });
   }
 
-  /* get getBookShelfId() {
-    return bookModule.bookShelfId;
-  } */
   backToTop() {
-    this.$router.push('/home');
+    this.$router.push('/')
   }
 
   closeEdit() {
-    this.showEdit = false;
+    this.showEdit = false
   }
 
   openEdit() {
-    this.showEdit = true;
+    this.showEdit = true
   }
 
   deleteReview(bookId: string) {
     if (window.confirm(`削除してもよろしいですか？`)) {
-      bookModule.deleteReview(bookId);
+      bookModule.deleteReview(bookId)
       firebase
         .firestore()
         .collection(`users/${this.getUid}/bookShelf`)
         .doc(bookId)
         .delete()
         .then(() => {
-          console.log(`${bookId}の削除に成功しました`);
-          console.log(bookModule.bookShelf);
-          console.log(this.bookShelf);
+          console.log(`${bookId}の削除に成功しました`)
+          console.log(bookModule.bookShelf)
+          console.log(this.bookShelf)
           if (this.bookShelf.length === 0) {
-            this.showShelf = false;
+            this.showShelf = false
           }
-        });
+        })
     }
   }
 
   editReview(book: BookShelfType) {
-    this.editDate = book.bookReview[0].reviewDate;
-    this.editText = book.bookReview[0].reviewText;
-    this.book = book;
-    this.openEdit();
+    this.editDate = book.bookReview[0].reviewDate
+    this.editText = book.bookReview[0].reviewText
+    this.book = book
+    this.openEdit()
   }
 
   destroyed() {
-    bookModule.resetBookShelf();
-    this.bookShelf = [];
+    bookModule.resetBookShelf()
+    this.bookShelf = []
   }
 }
 </script>
@@ -203,6 +200,28 @@ export default class UserPage extends Vue {
   }
 }
 
+@media screen and (max-width: 480px) {
+  .details {
+    max-width: 480px;
+    width: 80%;
+    margin: 30px auto;
+    display: block;
+    &__left {
+      width: 100%;
+    }
+    &__image {
+      background-color: #fff;
+      width: 100%;
+      margin: 0 auto 10px auto;
+      padding-top: 10px;
+      border-radius: 5px;
+    }
+    &__right {
+      width: 100%;
+    }
+  }
+}
+
 .review {
   width: 630px;
   margin: 0 auto;
@@ -215,7 +234,7 @@ export default class UserPage extends Vue {
     border-right: 1px dashed #bbb;
   }
   &__right {
-    width: 100%;
+    width: 70%;
     position: relative;
     .bookReview {
       &__date {
@@ -246,6 +265,56 @@ export default class UserPage extends Vue {
   &__bookAuthor {
     padding-top: 5px;
     font-size: 10px;
+  }
+}
+@media screen and (max-width: 480px) {
+  .review {
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+    display: block;
+    background-color: #fff;
+    border-bottom: 1px solid rgb(94, 94, 94);
+    &__left {
+      width: 100%;
+      border-right: none;
+    }
+    &__right {
+      width: 100%;
+      position: relative;
+      .bookReview {
+        &__date {
+          text-align: left;
+          padding-left: 20px;
+        }
+        &__text {
+          padding: 10px 20px;
+          text-align: left;
+          font-size: 0.8rem;
+        }
+        &__button {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          font-size: 1rem;
+          .icon {
+            color: #bbb;
+          }
+        }
+      }
+    }
+    &__bookTitle {
+      font-size: 10px;
+      font-weight: bold;
+      padding-bottom: 5px;
+    }
+    &__bookAuthor {
+      padding-top: 5px;
+      font-size: 10px;
+    }
+  }
+  .caption {
+    display: none;
   }
 }
 
@@ -283,6 +352,14 @@ export default class UserPage extends Vue {
   justify-content: space-between;
   span > i {
     padding-right: 5px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .bookcount {
+    max-width: 480px;
+    width: 80%;
+    margin-bottom: 15px;
   }
 }
 

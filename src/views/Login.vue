@@ -57,25 +57,25 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { authModule } from '@/store/modules/auth';
-import firebase from 'firebase';
-import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
-import { required, email } from 'vee-validate/dist/rules';
+import Vue from 'vue'
+import { authModule } from '@/store/modules/auth'
+import firebase from 'firebase'
+import { ValidationProvider, ValidationObserver, extend } from 'vee-validate'
+import { required, email } from 'vee-validate/dist/rules'
 extend('email', {
   ...email,
   message: '※入力形式が正しくありません',
-});
+})
 extend('required', {
   ...required,
   message: '※{_field_}は必須項目です',
-});
+})
 
 export type DataType = {
-  email: string;
-  password: string;
-  loginError: boolean;
-};
+  email: string
+  password: string
+  loginError: boolean
+}
 
 export default Vue.extend({
   name: 'Login',
@@ -86,31 +86,31 @@ export default Vue.extend({
       email: '',
       password: '',
       loginError: false,
-    };
+    }
   },
   computed: {},
   methods: {
     signIn(): void {
-      let email = this.email;
-      let password = this.password;
+      let email = this.email
+      let password = this.password
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          this.loginError = false;
-          const user = userCredential.user;
-          authModule.setLoginUser(user);
-          authModule.changeFlgTrue();
-          this.$router.push('/home');
+          this.loginError = false
+          const user = userCredential.user
+          authModule.setLoginUser(user)
+          authModule.changeFlgTrue()
+          this.$router.replace('/')
         })
         .catch(() => {
-          this.loginError = true;
-          this.email = '';
-          this.password = '';
-        });
+          this.loginError = true
+          this.email = ''
+          this.password = ''
+        })
     },
   },
-});
+})
 </script>
 
 <style lang="scss">
@@ -130,6 +130,7 @@ export default Vue.extend({
   padding: 30px;
   border-radius: 10px;
   background-color: #ffffff;
+  box-shadow: 5px 5px 10px rgba(180, 180, 180, 0.6);
   a {
     font-size: 14px;
     color: #8491a5;
@@ -155,6 +156,13 @@ export default Vue.extend({
       font-size: 15px;
       color: #fcbd4c;
     }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .login__form {
+    margin: 60px auto;
+    width: 330px;
   }
 }
 

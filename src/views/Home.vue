@@ -47,59 +47,76 @@
         </ul>
       </div>
     </div>
+    <button v-if="pageCount" @click="moreView">もっと見る</button>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { authModule } from '@/store/modules/auth';
-import firebase from 'firebase';
-import axios from 'axios';
+import { Component, Vue } from 'vue-property-decorator'
+import { authModule } from '@/store/modules/auth'
+import firebase from 'firebase'
+import axios from 'axios'
 
 @Component
 export default class Home extends Vue {
-  keyword = 'Vue.js';
-  books = [];
-  selectedBooksId = 0;
-  serchFlg = false;
+  keyword = 'Vue.js'
+  books: string[] = []
+  //selectedBooksId = 0
+  serchFlg = false
+  pageCount = false
+  totalPages = 0
+  currentPage = 1
 
   get getUid(): string | null {
-    return authModule.uid;
+    return authModule.uid
   }
 
   created(): void {
-    if (!this.getUid) {
-      this.$router.push('/');
+    /* if (!this.getUid) {
+      this.$router.push('/')
+    } */
+    if (this.getUid) {
+      this.fetchUsername()
     }
-    this.fetchUsername();
+    console.log(authModule.uid)
   }
 
-  //axiosで検索結果を取得
   getBooks(): void {
     if (this.keyword === ' ' || this.keyword === '　') {
-      this.keyword = '';
-      this.serchFlg = true;
+      this.keyword = ''
+      this.serchFlg = true
     }
     axios
       .get('https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404', {
         params: {
           applicationId: '1027306809265886299',
           title: this.keyword,
+          hits: 12,
         },
       })
       .then((res) => {
-        this.books = [];
+        this.totalPages = res.data.pageCount
+        this.books = []
+        //検索結果が0の際の処理
         if (res.data.Items.length === 0) {
-          this.serchFlg = true;
-          console.log('検索結果はありません');
+          this.serchFlg = true
         } else {
-          this.serchFlg = false;
-          this.books = res.data.Items;
+          this.serchFlg = false
+          this.books = res.data.Items
+        }
+        //取得情報が30件以上ある際の処理
+        if (res.data.pageCount > 1) {
+          this.pageCount = true
+        } else {
+          this.pageCount = false
         }
       })
-      .catch((error) => {
-        console.log('エラーです〜');
-      });
+  }
+
+  //元の検索結果の取得
+  serchBook(): void {
+    sessionStorage.setItem('search-params', this.keyword)
+    this.getBooks()
   }
 
   fetchUsername(): void {
@@ -109,25 +126,54 @@ export default class Home extends Vue {
       .get()
       .then((snapShot) => {
         snapShot.forEach((doc) => {
-          let user: any = doc.data();
-          authModule.setUserName(user);
-        });
-      });
+          let user: any = doc.data()
+          authModule.setUserName(user)
+        })
+      })
   }
 
-  serchBook(): void {
-    sessionStorage.setItem('search-params', this.keyword);
-    this.getBooks();
+  moreView(): void {
+    this.currentPage = this.currentPage + 1
+    if (this.currentPage <= this.totalPages) {
+      axios
+        .get(
+          'https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404',
+          {
+            params: {
+              applicationId: '1027306809265886299',
+              title: this.keyword,
+              page: this.currentPage,
+              hits: 12,
+            },
+          }
+        )
+        .then((res) => {
+          //検索結果の総件数の表示
+          this.totalPages = res.data.pageCount
+          if (res.data.Items.length === 0) {
+            this.serchFlg = true
+          } else {
+            this.serchFlg = false
+            res.data.Items.forEach((item: any) => {
+              this.books.push(item)
+            })
+            if (this.currentPage === this.totalPages) {
+              this.pageCount = false
+            }
+          }
+        })
+    }
   }
 
+  //検索情報が保持してた際の処理
   mounted() {
     if (sessionStorage.hasOwnProperty.call(sessionStorage, 'search-params')) {
-      let keyword = sessionStorage.getItem('search-params');
+      let keyword = sessionStorage.getItem('search-params')
       if (keyword != null) {
-        this.keyword = keyword;
+        this.keyword = keyword
       }
     }
-    this.getBooks();
+    this.getBooks()
   }
 }
 </script>

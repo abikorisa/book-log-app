@@ -1,13 +1,16 @@
 <template>
   <header class="site-header">
     <div class=" site-header__wrapper">
-      <router-link to="/home"
+      <router-link to="/"
         ><span class="brand">書籍管理アプリ</span></router-link
       >
       <nav class="nav">
-        <div class="nav__wrapper">
+        <div v-if="getUid" class="nav__wrapper">
           <span @click="toUserPage()">{{ getUserName.name }}さんのページ</span>
           <span @click="logout()">ログアウト</span>
+        </div>
+        <div v-else class="nav__wrapper">
+          <span @click="toLoginPage()">ログイン</span>
         </div>
       </nav>
     </div>
@@ -15,30 +18,33 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { authModule } from '@/store/modules/auth';
-import firebase from 'firebase';
+import { Component, Vue } from 'vue-property-decorator'
+import { authModule } from '@/store/modules/auth'
+import firebase from 'firebase'
 
 @Component
 export default class Header extends Vue {
   get getUid(): string | null {
-    return authModule.uid;
+    return authModule.uid
   }
 
   get getUserName(): string {
-    return authModule.username;
+    return authModule.username
   }
 
   logout(): void {
-    firebase.auth().signOut();
-    authModule.deleteUser();
-    authModule.changeFlgFalse();
-    console.log(authModule.headerFlg);
-    this.$router.push('/');
+    firebase.auth().signOut()
+    authModule.deleteUser()
+    authModule.changeFlgFalse()
+    console.log(authModule.headerFlg)
+    this.$router.push('/')
   }
 
   toUserPage(): void {
-    this.$router.push('/userpage');
+    this.$router.replace('/userpage')
+  }
+  toLoginPage(): void {
+    this.$router.push('/login')
   }
 }
 </script>

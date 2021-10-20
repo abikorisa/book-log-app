@@ -1,12 +1,5 @@
 <template>
   <div>
-    <Modal
-      v-show="showContent"
-      @from-child="closeModal"
-      :book_title="this.bookInfo.title"
-      :book_author="this.bookInfo.author"
-      :book_image="this.bookInfo.mediumImageUrl"
-    />
     <div class="details">
       <div class="details__left">
         <div class="details__image">
@@ -14,7 +7,7 @@
           <p>{{ this.bookInfo.title }}</p>
           <p>{{ this.bookInfo.author }}</p>
         </div>
-        <button @click="openModal" class="btn__contents">
+        <button v-if="getUid" @click="openModal" class="btn__contents">
           <i class="fas fa-book-open"></i>本棚に追加する
         </button>
       </div>
@@ -47,26 +40,34 @@
               {{ this.bookInfo.itemPrice.toLocaleString('ja-JP') }}円(税込)
             </td>
           </tr>
-          <tr class="table__row">
+          <tr class="table__row last">
             <th class="table__head">あらすじ</th>
             <td class="table__body">{{ this.bookInfo.itemCaption }}</td>
           </tr>
         </table>
       </div>
     </div>
+    <Modal
+      v-show="showContent"
+      @from-child="closeModal"
+      :book_title="this.bookInfo.title"
+      :book_author="this.bookInfo.author"
+      :book_image="this.bookInfo.mediumImageUrl"
+      :book_image2="this.bookInfo.largeImageUrl"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { authModule } from '@/store/modules/auth';
-import { bookModule } from '@/store/modules/book';
-import Modal from '@/components/molecules/modal.vue';
+import { Component, Watch, Vue } from 'vue-property-decorator'
+import { authModule } from '@/store/modules/auth'
+import { bookModule } from '@/store/modules/book'
+import Modal from '@/components/molecules/modal.vue'
 
 export type ParamsType = {
-  bookInfo: any;
-  id: string;
-};
+  bookInfo: any
+  id: string
+}
 
 @Component({
   components: {
@@ -77,48 +78,43 @@ export default class Detail extends Vue {
   bookInfo: ParamsType = {
     bookInfo: {},
     id: '',
-  };
-  showContent = false;
-  selectedBooksId = 0;
+  }
+  showContent = false
+  //selectedBooksId = 0
 
   get getUid(): string | null {
-    return authModule.uid;
+    return authModule.uid
   }
 
   get getParams() {
-    return bookModule.params;
+    return bookModule.params
   }
 
   created() {
+    console.log('ページが開きました')
     if (this.$route.params.id) {
-      let bookInfo = this.$route.params;
-      bookModule.setParams(bookInfo);
-      let books = bookModule.params;
-      this.bookInfo = books.bookInfo;
-      this.setParams();
+      let bookInfo = this.$route.params
+      bookModule.setParams(bookInfo)
+      let books = bookModule.params
+      this.bookInfo = books.bookInfo
+      this.setParams()
     } else {
-      /* let bookInfo = JSON.parse(sessionStorage.getItem('catch-params'))
-      bookModule.setParams(bookInfo);
-      let books = bookModule.params;
-      this.bookInfo = books.bookInfo;
-      this.setParams();
-      console.log(bookModule.params.id); */
-      console.log('パラムスが空です');
+      console.log('パラムスが空です')
     }
-    if (!this.getUid) {
-      this.$router.push('/');
-    }
+    /* if (!this.getUid) {
+      this.$router.push('/')
+    } */
   }
 
   setParams(): void {
-    sessionStorage.setItem('catch-params', JSON.stringify(this.bookInfo));
+    sessionStorage.setItem('catch-params', JSON.stringify(this.bookInfo))
   }
 
   openModal(): void {
-    this.showContent = true;
+    this.showContent = true
   }
   closeModal(): void {
-    this.showContent = false;
+    this.showContent = false
   }
 }
 </script>
@@ -179,6 +175,41 @@ export default class Detail extends Vue {
   }
 }
 
+@media screen and (max-width: 480px) {
+  .last td:last-child {
+    width: 100%;
+  }
+  .table {
+    width: 100%;
+    &__head {
+      background-color: #eee;
+      border-right: none;
+      height: 30px;
+      padding: 5px 10px 5px 10px;
+      white-space: nowrap;
+      &:last-child {
+        border: none;
+      }
+    }
+    &__body {
+      font-size: 13px;
+    }
+    &__row {
+      border-bottom: none;
+    }
+  }
+  .table th,
+  .table td {
+    border-bottom: none;
+    display: block;
+    width: 100%;
+  }
+
+  caption {
+    display: none;
+  }
+}
+
 caption {
   background-color: #e5e5e5;
   height: 50px;
@@ -210,6 +241,39 @@ caption {
 
     > i {
       color: #fcbd4c;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .btn__contents {
+    max-width: 480px;
+    width: 80%;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .details {
+    max-width: 480px;
+    width: 80%;
+    margin: 30px auto;
+    display: block;
+    &__left {
+      width: 100%;
+    }
+    &__image {
+      background-color: #fff;
+      width: 100%;
+      margin: 0 auto 10px auto;
+      padding: 20px 0;
+      border-radius: 5px;
+      > p {
+        font-size: 13px;
+      }
+    }
+    &__right {
+      width: 100%;
     }
   }
 }

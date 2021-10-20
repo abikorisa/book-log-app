@@ -60,21 +60,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { authModule } from '@/store/modules/auth';
-import firebase from 'firebase';
+import { Component, Vue } from 'vue-property-decorator'
+import { authModule } from '@/store/modules/auth'
+import firebase from 'firebase'
 
 //validate
-import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
-import { required, email } from 'vee-validate/dist/rules';
+import { ValidationProvider, ValidationObserver, extend } from 'vee-validate'
+import { required, email } from 'vee-validate/dist/rules'
 extend('email', {
   ...email,
   message: '※入力形式が正しくありません',
-});
+})
 extend('required', {
   ...required,
   message: '※{_field_}は必須項目です',
-});
+})
 
 @Component({
   components: {
@@ -83,27 +83,27 @@ extend('required', {
   },
 })
 export default class Register extends Vue {
-  email = '';
-  password = '';
-  name = '';
-  errorFlg = false;
-  uid: string | null = null;
+  email = ''
+  password = ''
+  name = ''
+  errorFlg = false
+  uid: string | null = null
 
   get getUid(): string | null {
-    return authModule.uid;
+    return authModule.uid
   }
 
   signIn(): void {
-    let email = this.email;
-    let password = this.password;
-    let name = this.name;
+    let email = this.email
+    let password = this.password
+    let name = this.name
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        authModule.setLoginUser(user);
-        authModule.changeFlgTrue();
+        const user = userCredential.user
+        authModule.setLoginUser(user)
+        authModule.changeFlgTrue()
       })
       .then(() => {
         if (this.getUid) {
@@ -112,16 +112,16 @@ export default class Register extends Vue {
             .collection(`users/${this.getUid}/userInfo`)
             .add({ name })
             .then(() => {
-              this.$router.push('/home');
-            });
+              this.$router.replace('/')
+            })
         }
       })
       .catch((error) => {
-        const errorCode = error.code;
+        const errorCode = error.code
         if (errorCode === 'auth/email-already-in-use') {
-          this.errorFlg = true;
+          this.errorFlg = true
         }
-      });
+      })
   }
 }
 </script>
@@ -131,5 +131,12 @@ export default class Register extends Vue {
 .resister__form {
   margin: 60px auto;
   width: 600px;
+}
+
+@media screen and (max-width: 480px) {
+  .resister__form {
+    margin: 60px auto;
+    width: 330px;
+  }
 }
 </style>
