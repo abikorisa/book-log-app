@@ -47,7 +47,9 @@
         </ul>
       </div>
     </div>
-    <button v-if="pageCount" @click="moreView">もっと見る</button>
+    <button v-if="pageCount" class="moreView-btn" @click="moreView">
+      もっと見る
+    </button>
   </div>
 </template>
 
@@ -227,6 +229,19 @@ export default class Home extends Vue {
       background: #eee;
       color: #fcbd4c;
     }
+  }
+}
+.moreView-btn {
+  color: #fff;
+  background-color: #fcbd4c;
+  border-radius: 10px;
+  font-weight: bold;
+  padding: 10px 30px;
+  margin: 10px 0 20px 0;
+  transition: 0.3s;
+  &:hover {
+    background: #eee;
+    color: #fcbd4c;
   }
 }
 </style>

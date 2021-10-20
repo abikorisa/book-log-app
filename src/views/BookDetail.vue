@@ -47,6 +47,9 @@
         </table>
       </div>
     </div>
+    <button class="moreView-btn" @click="toHome">
+      トップ画面に戻る
+    </button>
     <Modal
       v-show="showContent"
       @from-child="closeModal"
@@ -115,6 +118,10 @@ export default class Detail extends Vue {
   }
   closeModal(): void {
     this.showContent = false
+  }
+
+  toHome(): void {
+    this.$router.replace('/')
   }
 }
 </script>

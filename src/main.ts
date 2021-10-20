@@ -7,11 +7,11 @@ import firebase from 'firebase'
 Vue.config.productionTip = false
 
 const firebaseConfig = {
-  apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
-  authDomain: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
+  apiKey: "AIzaSyC_ULNkGOX_437In6cNSWx1hGEHHBkxsXY",
+  authDomain: "book-log-app-1cebd.firebaseapp.com",
+  projectId: "book-log-app-1cebd",
+  storageBucket: "book-log-app-1cebd.appspot.com",
+  messagingSenderId: "537348921004",
   appId: '1:537348921004:web:5cce23c453d32835c33109'
 };
 

@@ -4,7 +4,7 @@
       <div class="login__form">
         <div class="signIn">
           <div class="position-center panel">
-            <h2 class="signIn__title">書籍管理アプリ</h2>
+            <h2 class="signIn__title">ログイン</h2>
             <p class="error-message" v-if="loginError">
               入力に不備があります
             </p>
