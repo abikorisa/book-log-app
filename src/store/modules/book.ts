@@ -34,6 +34,7 @@ class Book extends VuexModule implements BookState {
   deleteTargetId: string | null = null;
   params: paramsDate = { bookInfo: {}, id: '' }
 
+  //getters----------------------------------------------------------------------
   get getBookShelfId() {
     return (id: string) => {
       this.bookShelf.find((book) => book.bookId === id)
@@ -45,7 +46,7 @@ class Book extends VuexModule implements BookState {
     return this.params
   }
 
-
+  //mutations----------------------------------------------------------------------
   @Mutation
   addBookShelfId(id: string) {
     this.bookShelfId = id
@@ -70,7 +71,6 @@ class Book extends VuexModule implements BookState {
 
   @Mutation
   fetchBookShelf(book: bookType) {
-    //console.log(book)
     this.bookShelf.push(book)
   }
 }

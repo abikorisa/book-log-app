@@ -127,7 +127,6 @@ export default class Register extends Vue {
 </script>
 
 <style lang="scss">
-//新規登録ページ
 .resister__form {
   margin: 60px auto;
   width: 600px;

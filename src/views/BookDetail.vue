@@ -62,12 +62,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Watch, Vue } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import { authModule } from '@/store/modules/auth'
 import { bookModule } from '@/store/modules/book'
 import Modal from '@/components/molecules/modal.vue'
 
-export type ParamsType = {
+type DataType = {
   bookInfo: any
   id: string
 }
@@ -78,12 +78,11 @@ export type ParamsType = {
   },
 })
 export default class Detail extends Vue {
-  bookInfo: ParamsType = {
+  bookInfo: DataType = {
     bookInfo: {},
     id: '',
   }
   showContent = false
-  //selectedBooksId = 0
 
   get getUid(): string | null {
     return authModule.uid
@@ -104,9 +103,6 @@ export default class Detail extends Vue {
     } else {
       console.log('パラムスが空です')
     }
-    /* if (!this.getUid) {
-      this.$router.push('/')
-    } */
   }
 
   setParams(): void {

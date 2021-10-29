@@ -70,12 +70,12 @@ import { bookModule } from '@/store/modules/book'
 import Edit from '@/components/molecules/edit.vue'
 import firebase from 'firebase'
 
-export type reviewType = {
+type reviewType = {
   reviewDate: string
   reviewText: string
 }
 
-export type BookShelfType = {
+type BookShelfType = {
   bookAuthor: string
   bookImage: string
   bookTitle: string

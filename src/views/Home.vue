@@ -63,7 +63,6 @@ import axios from 'axios'
 export default class Home extends Vue {
   keyword = 'Vue.js'
   books: string[] = []
-  //selectedBooksId = 0
   serchFlg = false
   pageCount = false
   totalPages = 0
@@ -74,9 +73,6 @@ export default class Home extends Vue {
   }
 
   created(): void {
-    /* if (!this.getUid) {
-      this.$router.push('/')
-    } */
     if (this.getUid) {
       this.fetchUsername()
     }

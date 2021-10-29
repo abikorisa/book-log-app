@@ -71,7 +71,7 @@ extend('required', {
   message: '※{_field_}は必須項目です',
 })
 
-export type DataType = {
+type DataType = {
   email: string
   password: string
   loginError: boolean

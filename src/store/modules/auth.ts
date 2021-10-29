@@ -10,7 +10,6 @@ export interface UserState {
   headerFlg: boolean
 }
 
-// デコレータを設定。nameにモジュール名を指定する。UserStateを継承する
 @Module({ stateFactory: true, dynamic: true, store, namespaced: true, name: "user" })
 class User extends VuexModule implements UserState {
   uid: string | null = null;
@@ -56,13 +55,6 @@ class User extends VuexModule implements UserState {
   changeFlgFalse(): void {
     this.headerFlg = false
   }
-
-  // actionもデコレータで指定
-  /* @Action({ rawError: true })
-  async login(uid: string | null) {
-    // thisでmutationが呼べる
-    this.setUser(uid);
-  } */
 }
 
 export const authModule = getModule(User);
