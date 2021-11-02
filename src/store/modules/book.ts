@@ -1,30 +1,8 @@
 // ~/store/user.ts
 import { Module, VuexModule, Mutation, getModule } from "vuex-module-decorators";
+import { reviewDate, paramsDate, bookType, BookState } from '../../../types/bookInfoType'
 import store from "@/store/store";
 
-// Stateの型を定義する
-interface reviewDate {
-  reviewDate: string;
-  reviewText: string;
-}
-
-interface paramsDate {
-  bookInfo: any;
-  id: string;
-}
-
-interface bookType {
-  bookTitle: string;
-  bookAuthor: string;
-  bookImage: string;
-  bookId: string;
-  bookReview: reviewDate[];
-}
-
-export interface BookState {
-  bookShelfId: string | null;
-  bookShelf: bookType[]
-}
 
 // デコレータを設定。nameにモジュール名を指定する。UserStateを継承する
 @Module({ stateFactory: true, dynamic: true, store, namespaced: true, name: "book" })

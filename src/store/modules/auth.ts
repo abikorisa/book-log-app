@@ -1,14 +1,8 @@
 // ~/store/user.ts
 import { Module, VuexModule, Mutation, Action, getModule } from "vuex-module-decorators";
+import { UserState } from '../../../types/userInfoType'
 import store from "@/store/store";
 
-// Stateの型を定義する
-export interface UserState {
-  uid: string | null;
-  login_user: any | null,
-  username: string
-  headerFlg: boolean
-}
 
 @Module({ stateFactory: true, dynamic: true, store, namespaced: true, name: "user" })
 class User extends VuexModule implements UserState {
